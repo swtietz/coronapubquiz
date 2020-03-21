@@ -1,6 +1,10 @@
-<div class="container">
+<ul>
+  <li class="text" *ngFor="let question of questions | async">
+    {{question.question}}
+  </li>
+</ul>
 
-  
+<!-- <div class="container">
   <div class="row">
     <div class="col-12">
       <div class="card">
@@ -9,11 +13,11 @@
         </div>
       </div>
       <div class="d-flex flex-wrap">
-        <!-- <button type="button" class="btn btn-primary btn-block">{{question.A}}</button>
+        <button type="button" class="btn btn-primary btn-block">{{question.A}}</button>
         <button type="button" class="btn btn-primary btn-block">{{question.B}}</button>
         <button type="button" class="btn btn-primary btn-block">{{question.C}}</button>
-        <button type="button" class="btn btn-primary btn-block">{{question.D}}</button> -->
+        <button type="button" class="btn btn-primary btn-block">{{question.D}}</button>
       </div>
     </div>
   </div>
-</div>
+</div> -->

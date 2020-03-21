@@ -12,10 +12,10 @@ import { Observable } from 'rxjs';
 
 export class QuizComponent implements OnInit {
 
-  question: Observable<Question>;
+  questions: Observable<Question[]>;
 
   constructor(quizService: QuizService) { 
-     this.question = quizService.getQuestion();
+     this.questions = quizService.getQuestions('anze', 'history_quiz');
   }
 
   ngOnInit(): void {
