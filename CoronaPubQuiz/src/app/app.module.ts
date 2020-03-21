@@ -11,6 +11,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { environment } from '../environments/environment';
 import { QuizComponent } from './pages/quiz/quiz.component';
+import { PubComponent } from './pages/pub/pub.component';
 
 
 
@@ -20,7 +21,8 @@ import { QuizComponent } from './pages/quiz/quiz.component';
 @NgModule({
   declarations: [
     AppComponent,
-    QuizComponent
+    QuizComponent,
+    PubComponent
   ],
   imports: [
     BrowserModule,
