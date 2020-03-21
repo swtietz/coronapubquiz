@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Quiz, QuizService } from 'src/app/quiz.service';
 import { MenuItem, Pub, PubService } from 'src/app/pub.service';
+import { AuthenticationService } from 'src/app/authentication.service'
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
@@ -25,8 +26,9 @@ export class PubComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    public authService: AuthenticationService,
     private quizService: QuizService,
-    private pubService: PubService
+    private pubService: PubService,
   ) {
     this.newItem = new MenuItem();
   }
