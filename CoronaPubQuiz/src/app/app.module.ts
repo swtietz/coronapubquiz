@@ -7,12 +7,14 @@ import { AppComponent } from './app.component';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { environment } from '../environments/environment';
 import { QuizComponent } from './pages/quiz/quiz.component';
 import { PubComponent } from './pages/pub/pub.component';
+import { LoginComponent } from './pages/login/login.component';
 
 
 
@@ -23,13 +25,15 @@ import { PubComponent } from './pages/pub/pub.component';
   declarations: [
     AppComponent,
     QuizComponent,
-    PubComponent
+    PubComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFireAuthModule,
     NgbModule,
     FormsModule
   ],
