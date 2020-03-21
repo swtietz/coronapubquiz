@@ -39,6 +39,12 @@ export class PubService {
   	pub.name = 'Freya Fuchs'
   	this.addPub(pub)
 
+  	let item = new MenuItem();
+  	item.id = 'Bier'
+  	item.price = 1.0
+  	item.name = 'Bier'
+  	this.addMenuItem(pub.id, item)
+
   }
 
 
@@ -52,8 +58,12 @@ export class PubService {
   	this.firestore.collection<Pub>('/pubs/'+pubId+'/menu').doc(menuItem.id).set(Object.assign({}, menuItem))
   }
 
+  deleteMenuItem(pubId, menuItem:MenuItem): void {
+  	this.firestore.collection<Pub>('/pubs/'+pubId+'/menu').doc(menuItem.id).delete()
+  }
+
   getMenuItems(pubId): Observable<MenuItem[]> {
-  	let menu$ = this.firestore.collection('pubs/'+pubId+'menu').snapshotChanges()
+  	let menu$ = this.firestore.collection('pubs/'+pubId+'/menu').snapshotChanges()
 	    .pipe(map(actions => {
 		  return actions.map(a => {
 		    const data = a.payload.doc.data() as MenuItem;
