@@ -11,11 +11,13 @@ export class Quiz{
 }
 
 export class Question{
+  id: String;
   question: String;
   A: String;
   B: String;
   C: String;
   D: String;
+  active: boolean;
 }
 
 
@@ -39,14 +41,18 @@ export class QuizService {
 
     this.quizzes = [new Quiz(), new Quiz()];
 
-    this.bar = 'anze'
-    this.quiz = 'history_quiz'
+    //this.bar = 'anze'
+    //this.quiz = 'history_quiz'
+
+
 
     console.log('Executed')
     
 
 
   }
+
+
 
 
   private loadQuestions(bar, quiz): Observable<Question[]> {
@@ -74,8 +80,23 @@ export class QuizService {
 
 
   getQuestions(bar, quiz): Observable<Question[]> {
-    this.questions$ = this.loadQuestions(bar, quiz)
+    this.questions$ = this.loadQuestionsWithID(bar, quiz)
+    //this.questions$.subscribe(console.log);
     return this.questions$
+  }
+
+
+  loadQuestionsWithID(bar, quiz): Observable<Question[]> {
+    //let questions$ = this.firestore.collection('pubs').doc(bar).collection('quizzes').doc(quiz).collection('questions').doc(id)
+    let questions$ = this.firestore.collection('pubs').doc(bar).collection('quizzes').doc(quiz).collection('questions').snapshotChanges()
+	    .pipe(map(actions => {
+		  return actions.map(a => {
+		    const data = a.payload.doc.data() as Question;
+		    const id = a.payload.doc.id;
+		    return { id, ...data } as Question;
+		  });
+		}));
+	return questions$
   }
   	
 
