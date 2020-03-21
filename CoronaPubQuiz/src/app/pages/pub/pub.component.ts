@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 
-
 @Component({
   selector: 'app-pub',
   templateUrl: './pub.component.html',
@@ -30,17 +29,14 @@ export class PubComponent implements OnInit {
     private pubService: PubService
   ) {
     this.newItem = new MenuItem();
-
   }
 
   ngOnInit(): void {
     this.barId = this.route.snapshot.paramMap.get('name');
 
-    this.quizzes = this.quizService.getQuizzes();
+    this.quizzes = this.quizService.getQuizzes(this.barId);
     this.menu = this.pubService.getMenuItems(this.barId);
-
   }
-
 
   clickAddNewItem(): void {
     this.showAddMenuItem = true;
@@ -56,6 +52,4 @@ export class PubComponent implements OnInit {
   clickDeleteItem(item: MenuItem): void {
     this.pubService.deleteMenuItem(this.barId, item);
   }
-
-
 }

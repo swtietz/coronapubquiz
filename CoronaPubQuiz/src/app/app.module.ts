@@ -14,7 +14,11 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../environments/environment';
 import { QuizComponent } from './pages/quiz/quiz.component';
 import { PubComponent } from './pages/pub/pub.component';
+
 import { LoginComponent } from './pages/login/login.component';
+
+//import { CreatorComponent } from './pages/creator/creator.component';
+
 
 
 
@@ -26,7 +30,8 @@ import { LoginComponent } from './pages/login/login.component';
     AppComponent,
     QuizComponent,
     PubComponent,
-    LoginComponent
+    LoginComponent,
+//    CreatorComponent,
   ],
   imports: [
     BrowserModule,

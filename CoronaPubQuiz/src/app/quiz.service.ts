@@ -14,7 +14,7 @@ export class Quiz{
 export class Question extends Object{
   id: string;
   question: string;
-  number: number;
+  index: number;
   A: String;
   B: String;
   C: String;
@@ -55,13 +55,13 @@ export class QuizService {
     
     let question = new Question();
     question.id = 'q1';
-	question.question = 'Wie spät ist es?';
-	question.number = 1;
-	question.A = 'AAA';
-	question.B = 'BBB';
-	question.C = 'CCC';
-	question.D = 'DDD';
-	question.active = true;
+    question.question = 'Wie spät ist es?';
+    question.index = 1;
+    question.A = 'AAA';
+    question.B = 'BBB';
+    question.C = 'CCC';
+    question.D = 'DDD';
+    question.active = true;
     
     this.addQuestion('anze', 'test2', question)
 
@@ -143,6 +143,4 @@ export class QuizService {
   		{answer: answer}
   	)
   }
-
-
 }
