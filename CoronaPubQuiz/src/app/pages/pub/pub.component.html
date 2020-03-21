@@ -1,1 +1,45 @@
 <p>pub works!</p>
+
+
+<div class="container" *ngFor="let quiz of quizzes | async">
+	{{quiz.name}}
+</div>
+
+
+
+
+<div class="container" >
+	Getränke Karte:
+	<div class="container" *ngFor="let item of menu | async">
+		{{item.name}}: {{item.price}}€ 
+		<button type="button" class="btn btn-primary btn-block" (click)="clickDeleteItem(item)">
+			Löschen
+		</button>
+	</div>
+
+
+	<button type="button" class="btn btn-primary btn-block" (click)="clickAddNewItem()">
+		Menü Item hinzufügen
+	</button>
+
+	<div class="container" *ngIf="showAddMenuItem">
+		<div class="row">
+			<div class="d-flex flex-wrap">
+				Neues Getränk oder Gericht auf die Karte packen:
+				<div>
+					<label for="typeahead-basic">Name:</label>
+					<input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="newItem.name" />
+					<label for="typeahead-basic">Price:</label>
+					<input id="typeahead-basic" type="number" class="form-control" [(ngModel)]="newItem.price" />
+				</div>
+				<button type="button" class="btn btn-primary btn-block" (click)="clickSaveNewItem()">
+					Speichern
+				</button>
+				
+
+			</div>
+
+		</div>
+
+	</div>
+</div>
