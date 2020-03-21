@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import {AuthenticationService} from './authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ export class AppComponent {
 
   
 
-  constructor(auth: AuthenticationService) {
+  constructor( private router: Router ,public auth: AuthenticationService) {
 
   }
 }
