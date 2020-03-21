@@ -13,6 +13,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../environments/environment';
 import { QuizComponent } from './pages/quiz/quiz.component';
 import { PubComponent } from './pages/pub/pub.component';
+import { CreatorComponent } from './pages/creator/creator.component';
 
 
 
@@ -23,7 +24,8 @@ import { PubComponent } from './pages/pub/pub.component';
   declarations: [
     AppComponent,
     QuizComponent,
-    PubComponent
+    PubComponent,
+    CreatorComponent
   ],
   imports: [
     BrowserModule,
