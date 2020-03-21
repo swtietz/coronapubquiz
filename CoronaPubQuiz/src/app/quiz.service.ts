@@ -65,6 +65,8 @@ export class QuizService {
     
     this.addQuestion('anze', 'test2', question)
 
+    this.addSubmission('anze', 'test2', question.id, 'Füchse','A');
+
 	console.log('Executed')
   }
 
@@ -134,6 +136,12 @@ export class QuizService {
 
   addQuestion(bar, quiz, question:Question): void {
   	this.firestore.collection<Question>('pubs/'+bar+'/quizzes/'+quiz+'/questions').doc(question.id).set(Object.assign({}, question))
+  }
+
+  addSubmission(bar, quiz, questionId, groupId, answer): void {
+  	this.firestore.collection<Question>('pubs/'+bar+'/quizzes/'+quiz+'/questions/'+questionId+'/submissions/').doc(groupId).set(
+  		{answer: answer}
+  	)
   }
 
 
