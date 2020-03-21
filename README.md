@@ -11,8 +11,12 @@ serve: `ng serve`
 
 
 
-Additionally install :
-`npm install -g firebase-tools`
+Additionally install:
+```
+npm install -g @angular/cli
+npm install -g firebase-tools
+```
+
 and do:
-`firebase login`
+```firebase login```
 
