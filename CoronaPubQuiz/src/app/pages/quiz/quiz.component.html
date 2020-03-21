@@ -1,8 +1,19 @@
-<p>quiz works!</p>
+<div class="container">
 
-
-<ul>
-<li class="text" *ngFor="let quiz of quizzes | async">
-  {{quiz.name}}
-</li>
-</ul>
+  
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <p class="card-text">{{question.question | async}}</p>
+        </div>
+      </div>
+      <div class="d-flex flex-wrap">
+        <!-- <button type="button" class="btn btn-primary btn-block">{{question.A}}</button>
+        <button type="button" class="btn btn-primary btn-block">{{question.B}}</button>
+        <button type="button" class="btn btn-primary btn-block">{{question.C}}</button>
+        <button type="button" class="btn btn-primary btn-block">{{question.D}}</button> -->
+      </div>
+    </div>
+  </div>
+</div>

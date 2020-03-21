@@ -40,7 +40,7 @@ export class QuizService {
 
   getQuestion(): Observable<Question> {
   	var question = new Question()
-  	question.question = 'test'
+  	question.question = 'Wann begann der 1 Weltkrieg?'
   	question.A = '1992'
   	question.B = '1992'
   	question.C = '1992'
