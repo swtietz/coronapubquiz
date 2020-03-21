@@ -2,7 +2,7 @@
 
 
 <ul>
-<li class="text" *ngFor="let item of items | async">
-  {{quizzes.name}}
+<li class="text" *ngFor="let quiz of quizzes | async">
+  {{quiz.name}}
 </li>
 </ul>
