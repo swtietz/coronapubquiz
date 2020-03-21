@@ -35,6 +35,9 @@ export class QuizComponent implements OnInit {
 
   nextQuestion(question) {
     this.quizService.setQuestionActive(this.bar, this.quiz, question.id, false)
-    this.questions.subscribe(questions => this.quizService.setQuestionActive(this.bar, this.quiz, questions.find(q=>q.index === question.index+1).id, true))
+    this.questions.subscribe(questions => {
+      const next_question = questions.find(q=>q.index === question.index+1)
+      this.quizService.setQuestionActive(this.bar, this.quiz, next_question.id, true)
+    })
   }
 }
