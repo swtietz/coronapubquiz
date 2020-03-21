@@ -1,15 +1,9 @@
-<ul>
-  <li class="text" *ngFor="let question of questions | async">
-    {{question.question}}
-  </li>
-</ul>
-
-<!-- <div class="container">
-  <div class="row">
+<div class="container" *ngFor="let question of questions | async">
+  <div class="row" *ngIf="question.active">
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <p class="card-text">{{question.question | async}}</p>
+          <p class="card-text">{{question.question}}</p>
         </div>
       </div>
       <div class="d-flex flex-wrap">
@@ -20,4 +14,4 @@
       </div>
     </div>
   </div>
-</div> -->
+</div>
