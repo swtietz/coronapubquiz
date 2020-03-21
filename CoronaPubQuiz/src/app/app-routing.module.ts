@@ -8,7 +8,7 @@ import { PubComponent } from './pages/pub/pub.component';
 
 const routes: Routes = [
   { path: 'bar/:name/:quizname', component: QuizComponent },
-  { path: 'bar/:name/', component: PubComponent },
+  { path: 'bar/:name', component: PubComponent },
   { path: '', component: AppComponent },
 ];
 
