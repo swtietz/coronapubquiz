@@ -19,6 +19,7 @@ export class Question extends Object{
   B: String;
   C: String;
   D: String;
+  answer: String;
   active: boolean;
 }
 
@@ -55,6 +56,7 @@ export class QuizService {
     question.B = 'BBB';
     question.C = 'CCC';
     question.D = 'DDD';
+    question.answer = 'C';
     question.active = true;
     
     this.addQuestion('anze', 'test2', question)
@@ -75,6 +77,7 @@ export class QuizService {
                     questions.B = b.B;
                     questions.C = b.C;
                     questions.D = b.D;
+                    questions.answer = b.answer;
                     
                     console.log(questions);
                     return questions;
