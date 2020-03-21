@@ -1,0 +1,40 @@
+# compiled output
+CoronaPubQuiz/dist
+CoronaPubQuiz/tmp
+CoronaPubQuiz/out-tsc
+
+# dependencies
+CoronaPubQuiz/node_modules
+
+# IDEs and editors
+CoronaPubQuiz/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+CoronaPubQuiz/.sass-cache
+CoronaPubQuiz/connect.lock
+CoronaPubQuiz/coverage
+CoronaPubQuiz/libpeerconnection.log
+npm-debug.log
+testem.log
+CoronaPubQuiz/typings
+
+# e2e
+/e2e/*.js
+/e2e/*.map
+
+# System Files
+.DS_Store
+Thumbs.db

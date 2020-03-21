@@ -1,0 +1,19 @@
+{
+  "hosting": [
+    {
+      "target": "CoronaPubQuiz",
+      "public": "dist/CoronaPubQuiz",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ]
+}
