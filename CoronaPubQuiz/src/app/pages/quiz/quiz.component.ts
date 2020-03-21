@@ -1,3 +1,6 @@
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 
 import { QuizService, Question } from '../../quiz.service'
@@ -14,11 +17,15 @@ export class QuizComponent implements OnInit {
 
   questions: Observable<Question[]>;
 
-  constructor(quizService: QuizService) { 
-     this.questions = quizService.getQuestions('anze', 'history_quiz');
-  }
+  constructor(
+    private route: ActivatedRoute,
+              private quizService: QuizService,
+              private location: Location
+              ) {}
 
   ngOnInit(): void {
+    const bar = this.route.snapshot.paramMap.get('name');
+    const quiz = this.route.snapshot.paramMap.get('quizname');
+    this.questions = this.quizService.getQuestions(bar, quiz);
   }
-
 }
