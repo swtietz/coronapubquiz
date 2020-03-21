@@ -27,9 +27,7 @@ export class Question extends Object{
   providedIn: 'root'
 })
 export class QuizService {
-
-  //quizzes: Observable<any[]>;
-  quizzes: Quiz[];
+  quizzes$: Observable<Quiz[]>;
   questions$: Observable<Question[]>;
 
   bar: string;
@@ -41,8 +39,6 @@ export class QuizService {
 
   	this.firestore = firestore;
 
-    this.quizzes = [new Quiz(), new Quiz()];
-
     //this.bar = 'anze'
     //this.quiz = 'history_quiz'
 
@@ -50,8 +46,6 @@ export class QuizService {
     //this.setQuestionActive('anze','history_quiz','q1')
 
     this.addQuiz('anze', 'test2')
-    
-
     
     let question = new Question();
     question.id = 'q1';
@@ -69,9 +63,6 @@ export class QuizService {
 
 	console.log('Executed')
   }
-
-
-
 
   private loadQuestions(bar, quiz): Observable<Question[]> {
     let questions$ = this.firestore.collection('pubs').doc(bar).collection('quizzes').doc(quiz).collection('questions')
@@ -92,10 +83,19 @@ export class QuizService {
     return questions$
   }
 
-  getQuizzes(): Observable<Quiz[]> {
-    return of(this.quizzes);
+  getQuizzes(bar): Observable<Quiz[]> {
+    this.quizzes$ = this.firestore.collection('pubs').doc(bar).collection('quizzes')
+    		.valueChanges()
+    		.pipe(map(collection => {
+                return collection.map(b => {
+                    let quiz = new Quiz();
+                    quiz.name = b.name;
+                    console.log(quiz);
+                    return quiz;
+                });
+            }));
+    return this.quizzes$
   }
-
 
   getQuestions(bar, quiz): Observable<Question[]> {
     this.questions$ = this.loadQuestionsWithID(bar, quiz)
