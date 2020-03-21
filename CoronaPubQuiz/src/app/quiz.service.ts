@@ -7,13 +7,14 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import 'firebase/firestore';
 
 export class Quiz{
-  name: String;
+  name: string;
   id: any
 }
 
-export class Question{
-  id: String;
-  question: String;
+export class Question extends Object{
+  id: string;
+  question: string;
+  number: number;
   A: String;
   B: String;
   C: String;
@@ -48,12 +49,23 @@ export class QuizService {
 
     //this.setQuestionActive('anze','history_quiz','q1')
 
-    //this.addQuiz('anze', 'test2')
-
-    console.log('Executed')
+    this.addQuiz('anze', 'test2')
     
 
+    
+    let question = new Question();
+    question.id = 'q1';
+	question.question = 'Wie spät ist es?';
+	question.number = 1;
+	question.A = 'AAA';
+	question.B = 'BBB';
+	question.C = 'CCC';
+	question.D = 'DDD';
+	question.active = true;
+    
+    this.addQuestion('anze', 'test2', question)
 
+	console.log('Executed')
   }
 
 
@@ -118,8 +130,10 @@ export class QuizService {
   	let quizzes = this.firestore.collection<Quiz>('pubs/'+bar+'/quizzes/').doc(quiz).set({
 	    name: quiz,
 	})
+  }
 
-
+  addQuestion(bar, quiz, question:Question): void {
+  	this.firestore.collection<Question>('pubs/'+bar+'/quizzes/'+quiz+'/questions').doc(question.id).set(Object.assign({}, question))
   }
 
 
