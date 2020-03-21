@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 
-import { Observable } from 'rxjs';
-import 'firebase/firestore';
 
 @Component({
   selector: 'app-root',
@@ -13,9 +10,9 @@ export class AppComponent {
   title = 'CoronaPubQuiz';
 
 
-  items: Observable<any[]>;
+  
 
-  constructor(firestore: AngularFirestore) {
-    this.items = firestore.collection('pubs').valueChanges();
+  constructor() {
+
   }
 }
