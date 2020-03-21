@@ -16,13 +16,7 @@ import { QuizComponent } from './pages/quiz/quiz.component';
 import { PubComponent } from './pages/pub/pub.component';
 
 import { LoginComponent } from './pages/login/login.component';
-
-//import { CreatorComponent } from './pages/creator/creator.component';
-
-
-
-
-
+import { CreatorComponent } from './pages/creator/creator.component';
 
 
 @NgModule({
@@ -31,7 +25,7 @@ import { LoginComponent } from './pages/login/login.component';
     QuizComponent,
     PubComponent,
     LoginComponent,
-//    CreatorComponent,
+    CreatorComponent
   ],
   imports: [
     BrowserModule,
