@@ -8,6 +8,7 @@ import 'firebase/firestore';
 
 export class Quiz{
   name: String;
+  id: any
 }
 
 export class Question{
@@ -45,6 +46,9 @@ export class QuizService {
     //this.quiz = 'history_quiz'
 
 
+    //this.setQuestionActive('anze','history_quiz','q1')
+
+    //this.addQuiz('anze', 'test2')
 
     console.log('Executed')
     
@@ -100,6 +104,23 @@ export class QuizService {
   }
   	
 
+  setQuestionActive(bar, quiz, id, status=true): void {
+
+  	let question = this.firestore.doc<Question>('pubs/'+bar+'/quizzes/'+quiz+'/questions/'+id);
+
+    question.update({'active':status});
+    //let questions$ = this.firestore.collection('pubs').doc(bar).collection('quizzes').doc(quiz).collection('questions').doc(quiz).
+	
+  }
+
+
+  addQuiz(bar, quiz): void {
+  	let quizzes = this.firestore.collection<Quiz>('pubs/'+bar+'/quizzes/').doc(quiz).set({
+	    name: quiz,
+	})
+
+
+  }
 
 
 }
