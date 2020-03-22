@@ -98,9 +98,10 @@
 
       </div>
       <div class="d-flex flex-wrap footer_wrapper">
-      <div class="rounded-circle m-2 friend"></div>
-      <div class="rounded-circle m-2 friend"></div>
-      <p class="drink_list">10</p>
+        <ng-container *ngFor="let groupMember of groupMembers | async">
+          <div class="rounded-circle m-2 text-center friend"><div class="d-inline icon">{{groupMember.icon}}</div></div>
+        </ng-container>
+        <p class="drink_list">10</p>
       </div>
     </div>
 

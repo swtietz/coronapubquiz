@@ -14,6 +14,10 @@
     display:inline;
 }
 
+.friend .icon {
+    font-size: 1.4em;
+}
+
 .drink {
     background-color: #E70053; 
     height: 60px; 
