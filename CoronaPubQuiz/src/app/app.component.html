@@ -1,5 +1,6 @@
 <!-- Toolbar -->
 <nav class="navbar">
+  <p></p>
   <button *ngIf="auth.isLoggedIn" type="button" class="btn btn-primary" (click)="auth.logout()">Logout</button>
   <button *ngIf="!auth.isLoggedIn" type="button" class="btn btn-primary" routerLink="/bar/login">Pub Betreiber Login</button>
 </nav>

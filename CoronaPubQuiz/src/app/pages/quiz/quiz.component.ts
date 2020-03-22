@@ -15,7 +15,6 @@ import { flatMap } from 'rxjs/operators';
 import { AngularFireDatabase } from '@angular/fire/database';
 import 'firebase/database';
 import { GroupService, Group } from 'src/app/group.service';
-import { timingSafeEqual } from 'crypto';
 
 declare function setupStreams(database: any, quiz: any, group: any, user: any, isModerator: boolean, videoElement: any, audioParent: any): any;
 
@@ -119,7 +118,7 @@ export class QuizComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     var user = this.authService.getUser();
     if(user) {
-      //this.destroyStreams = setupStreams(this.db, this.quiz, this.quiz + "_" + this.group, user.uid, this.pubService.isOwner, this.videoElement.nativeElement, this.audioParent.nativeElement);
+      this.destroyStreams = setupStreams(this.db, this.quiz, this.quiz + "_" + this.group, user.uid, this.pubService.isOwner, this.videoElement.nativeElement, this.audioParent.nativeElement);
     }
   }
 

@@ -1,4 +1,5 @@
 <div class="container-fluid">
+	<h2>neues Quiz erstellen</h2>
 	<form (ngSubmit)="clickSaveQuiz()" novalidate>
 		<div class="row">
 			<div class="col-md-12 col-lg-6">
@@ -30,7 +31,7 @@
 		<div class="row">
 			<div class="col-md-10 col-lg-6 m-2">
 				<div class="d-flex flex-wrap justify-content-center">
-					<button type="button" class="btn btn-primary" (click)="clickAddNewQuestion()">
+					<button type="button" class="btn btn-primary pub_button" (click)="clickAddNewQuestion()">
 						Frage hinzufügen
 					</button>
 				</div>
@@ -66,19 +67,17 @@
 									<input id="typeahead-Da" type="radio" name="answer" class="form-check-input" [(ngModel)]="newQuestion.answer" value="D"/>	
 								</div>
 							</div>
-							<button type="submit" class="btn btn-primary btn-success">
+							<button type="submit" class="btn btn-primary btn-success pub_button">
 								Speichere Frage
 							</button>
 						</div>
 					</form>
 				</div>
 			</div>
-			<div class="col-md-12 col-lg-6">
-				<div class="d-flex flex-wrap justify-content-center">
-					<button type="submit" class="btn btn-success ml-2" (click)="clickSaveQuiz()">
-						Speichere Quiz
-					</button>
-				</div>
+			<div class="bottom_menu">
+				<button type="submit" class="btn btn-success ml-2 pub_button" (click)="clickSaveQuiz()">
+					Speichere Quiz
+				</button>
 			</div>
 		</div>
 	</form>
