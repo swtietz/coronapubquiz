@@ -44,7 +44,7 @@ export class QuizComponent implements OnInit, AfterViewInit {
   destroyStreams: any;
 
   quizname: string = "";
-
+  quizcomplete: string = "";
 
   currentAnswer:string = '';
 
@@ -67,7 +67,10 @@ export class QuizComponent implements OnInit, AfterViewInit {
     this.group = this.route.snapshot.paramMap.get('groupname');
     
     this.quizService.getQuiz(this.bar, this.quiz).subscribe((quiz:Quiz) => {
-      this.quizname = quiz.name
+      this.quizname = quiz.name;
+      if(quiz.complete){
+        this.router.navigate(['/bar/'+this.bar+'/'+this.quiz+'/'+this.group+'/result']);
+      }
     })
 
     this.questions = this.quizService.getQuestions(this.bar, this.quiz);
@@ -89,6 +92,8 @@ export class QuizComponent implements OnInit, AfterViewInit {
     this.questions.subscribe((questions:Question[])=>{
 
         this.activeQuestion = questions.filter((q) => q.active)[0]
+
+        console.log('this.activeQuestion', this.activeQuestion )
         
         this.submissions.subscribe((submissions:Submission[])=>{
         this.activeSubmission = submissions.filter((s) => s.questionId == this.activeQuestion.id && s.groupId == this.group)[0]
@@ -140,9 +145,14 @@ export class QuizComponent implements OnInit, AfterViewInit {
 
   nextQuestion(question) {
     this.quizService.setQuestionActive(this.bar, this.quiz, question.id, false)
+
     this.questions.subscribe(questions => {
       const next_question = questions.find(q=>q.index === question.index+1)
-      this.quizService.setQuestionActive(this.bar, this.quiz, next_question.id, true)
+      if (next_question){
+        this.quizService.setQuestionActive(this.bar, this.quiz, next_question.id, true)
+      }else{
+        this.quizService.setComplete(this.bar, this.quiz)
+      }
     })
   }
 }

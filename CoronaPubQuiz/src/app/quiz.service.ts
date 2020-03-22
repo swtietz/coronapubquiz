@@ -18,6 +18,7 @@ export class Submission{
 export class Quiz{
   name: string;
   id: any
+  complete: boolean = false;
 }
 
 export class Order{
@@ -52,6 +53,11 @@ export class QuizService {
 
   constructor(private firestore: AngularFirestore) {}
 
+
+  setComplete(bar, quiz){
+    this.firestore.doc<Quiz>('pubs/'+bar+'/quizzes/'+quiz).update({complete: true})
+  }
+
   private loadQuestions(bar, quiz): Observable<Question[]> {
     let questions$ = this.firestore.collection('pubs').doc(bar).collection('quizzes').doc(quiz).collection('questions')
     		.valueChanges()
@@ -72,6 +78,9 @@ export class QuizService {
             }));
     return questions$
   }
+
+
+
 
   getQuizzes(bar): Observable<Quiz[]> {
     this.quizzes$ = this.firestore.collection('pubs').doc(bar).collection('quizzes')
