@@ -1,10 +1,19 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, of, pipe } from 'rxjs';
-import { map} from 'rxjs/operators';
+import { map, switchMap, combineLatest, flatMap} from 'rxjs/operators';
 
 import { AngularFirestore } from '@angular/fire/firestore';
 import 'firebase/firestore';
+
+
+export class Submission{
+  answer:string;
+  quizId: string;
+  groupId:string;
+  questionId:string
+
+}
 
 export class Quiz{
   name: string;
@@ -21,6 +30,7 @@ export class Question extends Object{
   D: String;
   answer: String;
   active: boolean;
+  submissions:any[]
 }
 
 
@@ -48,6 +58,7 @@ export class QuizService {
                     questions.C = b.C;
                     questions.D = b.D;
                     questions.answer = b.answer;
+                    questions.submissions = b.submissions;
                     
                     console.log(questions);
                     return questions;
@@ -81,6 +92,9 @@ export class QuizService {
     //this.questions$.subscribe(console.log);
     return this.questions$
   }
+
+
+
 
 
   loadQuestionsWithID(bar, quiz): Observable<Question[]> {
@@ -117,9 +131,25 @@ export class QuizService {
   	this.firestore.collection<Question>('pubs/'+bar+'/quizzes/'+quiz+'/questions').doc(this.firestore.createId()).set(Object.assign({}, question))
   }
 
-  addSubmission(bar, quiz, questionId, groupId, answer): void {
-  	this.firestore.collection<Question>('pubs/'+bar+'/quizzes/'+quiz+'/questions/'+questionId+'/submissions/').doc(groupId).set(
-  		{answer: answer}
-  	)
+  getSubmissions(bar, quiz, question): Observable<Submission[]>{
+    return this.firestore.collection<Submission>('pubs/'+bar+'/quizzes/'+quiz+'/submissions').valueChanges();
   }
+
+  getSubmission(bar, quiz, group, question, ): Observable<Submission>{
+    return this.firestore.doc<Submission>('pubs/'+bar+'/quizzes/'+quiz+'/questions/'+question+'/submissions/'+group).valueChanges()
+  }
+
+  addSubmission(bar, quiz, questionId, groupId, answer): void {
+    console.log('Adding submission', groupId+questionId)
+  	this.firestore.collection<Submission>('pubs/'+bar+'/quizzes/'+quiz+'/submissions/').doc(groupId+'_'+questionId).set(Object.assign({}, {answer: answer,
+        quizId: quiz,
+        groupId: groupId,
+        questionId:questionId
+      }))
+  		
+  	
+  }
+
+
+
 }

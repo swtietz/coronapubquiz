@@ -24,5 +24,11 @@ export class GroupService {
   getGroups(bar:string, quiz:string): Observable<Group[]>{
   	return this.firestore.collection<Group>('pubs/'+bar+'/quizzes/'+quiz+'/groups').valueChanges()
   }
+
+  addGroup(bar:string, quiz:string, group:string){
+  	 let quizzes = this.firestore.collection<Group>('pubs/'+bar+'/quizzes/'+quiz+'/groups').add({
+	    name: group,
+    })
+  }
 }
 

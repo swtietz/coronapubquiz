@@ -92,6 +92,9 @@ export class PubService {
   	this.firestore.collection<Pub>('/pubs/'+pubId+'/menu').doc(menuItem.id).delete()
   }
 
+
+
+
   getMenuItems(pubId): Observable<MenuItem[]> {
   	let menu$ = this.firestore.collection('pubs/'+pubId+'/menu').snapshotChanges()
 	    .pipe(map(actions => {

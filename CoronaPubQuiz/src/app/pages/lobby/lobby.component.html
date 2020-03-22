@@ -1,7 +1,14 @@
-<p>lobby works!</p>
+<div class="bierdeckel left">
+    <h2>Name des Quizzes</h2>
+</div>
+<div class="bierdeckel right">
+    <p>Trete einer Gruppe bei</p>
+    <div class="container" *ngFor="let group of groups | async">
+        <button type="button" class="btn btn-primary btn-block join_group" (click)="join(group)" >{{group.name}}</button>        
+    </div>
+</div>
 
-
-<div class="container" *ngFor="let group of groups | async">
-{{group.name}} <button type="button" class="btn btn-primary btn-block" (click)="join(group)" >Beitreten</button>
-
+<div class="container">
+<input type="text" class="form-control mb-2" placeholder="Gruppenname" required #newGroupName autofocus>
+<button type="button" class="btn btn-primary btn-block" (click)="create(newGroupName.value)" >Neue Gruppe erstellen</button>
 </div>

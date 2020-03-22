@@ -1,5 +1,33 @@
 
 <div id="main" style="position: relative;">
+  <div class="bierdeckel left">
+    <h2>Quizname</h2>
+    <table class="score_overview">
+      <thead>
+        <tr>
+          <th></th>
+          <th>
+            <img src="./assets/media/bier_icon.svg">
+          </th>
+          <th>
+            <img src="./assets/media/score_icon.svg">
+          </th>  
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Kranplatzverdichter</td>
+          <td>2</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>immerblau</td>
+          <td>4</td>
+          <td>2</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <div class="container">
     <div class="row">
@@ -23,11 +51,12 @@
             <p class="card-text">{{question.question}}</p>
           </div>
         </div>
-        <div class="d-flex flex-wrap mt-4">
-          <button type="button" class="btn btn-primary btn-block" >{{question.A}}</button>
-          <button type="button" class="btn btn-primary btn-block" >{{question.B}}</button>
-          <button type="button" class="btn btn-primary btn-block" >{{question.C}}</button>
-          <button type="button" class="btn btn-primary btn-block" >{{question.D}}</button>
+
+        <div class="d-flex flex-wrap mt-4 answers_wrapper">
+          <button type="button" class="btn btn-primary btn-block answer" >{{question.A}}</button>
+          <button type="button" class="btn btn-primary btn-block answer" >{{question.B}}</button>
+          <button type="button" class="btn btn-primary btn-block answer" >{{question.C}}</button>
+          <button type="button" class="btn btn-primary btn-block answer" >{{question.D}}</button>
         </div>
       </div>
     </div>
@@ -59,11 +88,14 @@
             <p class="card-text">{{question.question}}</p>
           </div>
         </div>
-        <div class="d-flex flex-wrap mt-4">
-          <button type="button" class="btn btn-primary btn-block" (click)="submit(question, 'A')">{{question.A}}</button>
-          <button type="button" class="btn btn-primary btn-block" (click)="submit(question, 'B')">{{question.B}}</button>
-          <button type="button" class="btn btn-primary btn-block" (click)="submit(question, 'C')">{{question.C}}</button>
-          <button type="button" class="btn btn-primary btn-block" (click)="submit(question, 'D')">{{question.D}}</button>  
+
+        <div class="d-flex flex-wrap mt-4 answers_wrapper">
+          <button type="button" [style.background-color]="currentAnswer=='A' ? 'purple': 'turquoise'" class="btn btn-primary btn-block" (click)="submit(question, 'A')">{{question.A}}</button>
+          <button type="button" [style.background-color]="currentAnswer=='B' ? 'purple': 'turquoise'" class="btn btn-primary btn-block" (click)="submit(question, 'B')">{{question.B}}</button>
+          <button type="button" [style.background-color]="currentAnswer=='C' ? 'purple': 'turquoise'" class="btn btn-primary btn-block" (click)="submit(question, 'C')">{{question.C}}</button>
+          <button type="button" [style.background-color]="currentAnswer=='D' ? 'purple': 'turquoise'" class="btn btn-primary btn-block" (click)="submit(question, 'D')">{{question.D}}</button>  
+
+
       </div>
       <div class="d-flex flex-wrap">
       <div class="rounded-circle m-2 friend"></div>

@@ -42,4 +42,8 @@ export class LobbyComponent implements OnInit {
   	this.router.navigate(['/bar/'+this.bar+'/'+this.quiz+'/'+group.name]);
   }
 
+  create(newGroupName:string){
+  	this.groupService.addGroup(this.bar, this.quiz, newGroupName)
+  }
+
 }
