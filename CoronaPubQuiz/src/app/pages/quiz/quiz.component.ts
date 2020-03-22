@@ -26,6 +26,7 @@ declare function setupStreams(database: any, quiz: any, group: any, user: any, i
 export class QuizComponent implements OnInit, AfterViewInit {
 
   @ViewChild('moderatorVideo') videoElement: ElementRef;
+  @ViewChild('audioParent') audioParent: ElementRef;
 
   questions: Observable<Question[]>;
   bar: string;
@@ -63,9 +64,10 @@ export class QuizComponent implements OnInit, AfterViewInit {
 
 
   ngAfterViewInit(): void {
-    this.authService.afAuth.authState.subscribe((user) => {
-      setupStreams(this.db, this.quiz, this.quiz, user.email, this.pubService.isOwner, this.videoElement.nativeElement, document.body);
-    });
+    var user = this.authService.getUser();
+    if(user) {
+      setupStreams(this.db, this.quiz, this.quiz, user.uid, this.pubService.isOwner, this.videoElement.nativeElement, this.audioParent.nativeElement);
+    }
   }
 
   submit(question, answer) {

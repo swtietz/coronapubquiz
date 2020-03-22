@@ -2,8 +2,7 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
   if(isModerator) {
     user = "moderator";
   }
-  console.log(firebase);
-  //var database = firebase.database().ref();
+
   var database = firebase.database.app.firebase_.database().ref();
   var pubsubQuiz = database.child('quizzes/' + quiz);
   var pubsubGroup = database.child('groups/' + group);
