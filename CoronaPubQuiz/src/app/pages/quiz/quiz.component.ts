@@ -15,7 +15,6 @@ import { flatMap } from 'rxjs/operators';
 import { AngularFireDatabase } from '@angular/fire/database';
 import 'firebase/database';
 import { GroupService, Group } from 'src/app/group.service';
-import { timingSafeEqual } from 'crypto';
 
 declare function setupStreams(database: any, quiz: any, group: any, user: any, isModerator: boolean, videoElement: any, audioParent: any): any;
 
