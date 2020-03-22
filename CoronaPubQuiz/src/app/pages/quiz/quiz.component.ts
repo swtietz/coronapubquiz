@@ -1,15 +1,12 @@
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { ElementRef, ViewChild, Component, OnInit, AfterViewInit } from '@angular/core';
+import { ElementRef, ViewChild, Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 
 import { AuthenticationService } from '../../authentication.service'
 import { QuizService, Question } from '../../quiz.service'
 import { PubService } from 'src/app/pub.service';
 
 import { Observable } from 'rxjs';
-
-
-
 
 import { AngularFireDatabase } from '@angular/fire/database';
 import 'firebase/database';
@@ -32,6 +29,7 @@ export class QuizComponent implements OnInit, AfterViewInit {
   bar: string;
   quiz: string;
   group: string;
+  destroyStreams: any;
 
   constructor(
     private authService:AuthenticationService,
@@ -57,17 +55,17 @@ export class QuizComponent implements OnInit, AfterViewInit {
         this.router.navigate(['/bar/'+this.bar+'/'+this.quiz+'/'+this.group]);
       }
     })
-
-
   }
   
-
-
   ngAfterViewInit(): void {
     var user = this.authService.getUser();
     if(user) {
-      setupStreams(this.db, this.quiz, this.quiz, user.uid, this.pubService.isOwner, this.videoElement.nativeElement, this.audioParent.nativeElement);
+      this.destroyStreams = setupStreams(this.db, this.quiz, this.quiz, user.uid, this.pubService.isOwner, this.videoElement.nativeElement, this.audioParent.nativeElement);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroyStreams();
   }
 
   submit(question, answer) {
