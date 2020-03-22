@@ -9,6 +9,7 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
     window.CPQStreamingUser = (isModerator) ? "moderator" : uuidv4();
   }
   user = window.CPQStreamingUser;
+  isModerator = user == "moderator";
 
   console.log("user:", user);
 
@@ -88,6 +89,7 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
     if (sender != user && ((isModerator && receiver == "moderator") || receiver == user || receiver == "all")) {
         if (isModerator && msg.request_video) {
           pcs[sender] = create_peer_connection(sender);
+          console.log(mediaStream);
           pcs[sender].addStream(mediaStream);
           pcs[sender].createOffer()
             .then(offer => pcs[sender].setLocalDescription(offer) )
@@ -137,53 +139,54 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
 
     navigator.mediaDevices.getUserMedia({audio:true, video:true})
       .then(stream => videoElement.srcObject = stream) // show self
-      .then(stream => mediaStream = stream); // save stream object for peer connections
-
-    pubsubQuiz.on('child_added', readMessage);
-    sendMessage("moderator", "all", JSON.stringify({new_moderator: true}));
+      .then(stream => mediaStream = stream) // save stream object for peer connections
+      .then(function() {
+        pubsubQuiz.on('child_added', readMessage);
+        sendMessage("moderator", "all", JSON.stringify({new_moderator: true}));
+      });
   } else {
     // guest
 
     console.log("guest");
 
     navigator.mediaDevices.getUserMedia({audio: true})
-      .then(stream => mediaStream = stream); // save stream object for peer connections
+      .then(stream => mediaStream = stream) // save stream object for peer connections
+      .then(function() {
+        var msg = pubsubGroup.push({ "user": user });
+        msg.remove();
 
-    var msg = pubsubGroup.push({ "user": user });
-    msg.remove();
+        pubsubGroup.on('child_added', function(data) {
+          var receiver = data.val().user;
+          console.log(receiver, user);
+          if(!pcs[receiver] && receiver != user) {
+            mediaObjects[receiver] = create_audio_element();
 
-    pubsubGroup.on('child_added', function(data) {
-      var receiver = data.val().user;
-      console.log(receiver, user);
-      if(!pcs[receiver] && receiver != user) {
-        mediaObjects[receiver] = create_audio_element();
+            pcs[receiver] = create_peer_connection(receiver, mediaObjects[receiver]);
+            pcs[receiver].addStream(mediaStream);
 
-        pcs[receiver] = create_peer_connection(receiver, mediaObjects[receiver]);
-        pcs[receiver].addStream(mediaStream);
+            setTimeout(function() {
+              if(pcs[receiver] && pcs[receiver].iceConnectionState == "new") {
+                delete pcs[receiver];
 
-        setTimeout(function() {
-          if(pcs[receiver] && pcs[receiver].iceConnectionState == "new") {
-            delete pcs[receiver];
+                if(mediaObjects[receiver]) {
+                  mediaObjects[receiver].remove();
+                  delete mediaObjects[receiver];
+                }
 
-            if(mediaObjects[receiver]) {
-              mediaObjects[receiver].remove();
-              delete mediaObjects[receiver];
-            }
+                console.log(receiver + " disconnected");
+              }
+            }, 10000);
 
-            console.log(receiver + " disconnected");
+            sendMessage(user, receiver, JSON.stringify({request_audio: true}));
+
+            console.log(receiver + " connected");
           }
-        }, 10000);
+        });
 
-        sendMessage(user, receiver, JSON.stringify({request_audio: true}));
-
-        console.log(receiver + " connected");
-      }
-    });
-
-    pcs["moderator"] = create_peer_connection("moderator", videoElement);
-    
-    pubsubQuiz.on('child_added', readMessage);
-    sendMessage(user, "moderator", JSON.stringify({request_video: true}));
+        pcs["moderator"] = create_peer_connection("moderator", videoElement);
+        
+        pubsubQuiz.on('child_added', readMessage);
+        sendMessage(user, "moderator", JSON.stringify({request_video: true}));
+      });
   }
-
 }
