@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, of, pipe } from 'rxjs';
-import { map, switchMap, combineLatest, flatMap} from 'rxjs/operators';
+import { map, switchMap, combineLatest, flatMap, take} from 'rxjs/operators';
 
 import { AngularFirestore } from '@angular/fire/firestore';
 import 'firebase/firestore';
@@ -83,18 +83,20 @@ export class QuizService {
 
 
   getQuizzes(bar): Observable<Quiz[]> {
-    this.quizzes$ = this.firestore.collection('pubs').doc(bar).collection('quizzes')
-    		.valueChanges()
-    		.pipe(map(collection => {
-                return collection.map(b => {
-                    let quiz = new Quiz();
-                    quiz.name = b.name;
-                    quiz.id = b.uid
-                    console.log(quiz);
-                    return quiz;
-                });
-            }));
+    this.quizzes$ = this.firestore.collection('pubs').doc(bar).collection('quizzes').snapshotChanges()
+    		      .pipe(map(actions => {
+          return actions.map(a => {
+            const data = a.payload.doc.data() as Quiz;
+            const id = a.payload.doc.id;
+            return { id, ...data } as Quiz;
+          });
+          }))
     return this.quizzes$
+  }
+
+  getQuizByName(barId, quizName): Observable<any[]> {
+    console.log(barId, quizName)
+    return this.firestore.collection('pubs').doc(barId).collection('quizzes', ref => ref.where('name', '==', quizName)).valueChanges()
   }
 
   getQuiz(barId, quizId): Observable<Quiz> {
@@ -184,6 +186,21 @@ export class QuizService {
   	
   }
 
+
+  resetQuiz(bar, quiz,): void {
+
+
+    this.getQuestions(bar, quiz).pipe(take(1)).subscribe(
+      (questions:Question[]) => {
+        questions.map((question:Question) => {
+          this.setQuestionActive(bar, quiz, question.id, question.index == 0)
+        })
+        this.firestore.doc<Quiz>('pubs/'+bar+'/quizzes/'+quiz).update({complete: false})
+      }
+    )
+
+    
+  }
 
 
 }

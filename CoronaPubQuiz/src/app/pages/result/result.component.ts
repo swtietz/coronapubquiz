@@ -10,11 +10,13 @@ import { PubService } from 'src/app/pub.service';
 import { Observable } from 'rxjs';
 
 
-import { flatMap, map } from 'rxjs/operators';
+import { flatMap, map, take } from 'rxjs/operators';
 
 
 import { AngularFireDatabase } from '@angular/fire/database';
 import 'firebase/database';
+
+
 
 
 @Component({
@@ -91,6 +93,14 @@ export class ResultComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+
+  reset(): void {
+    
+    this.quizService.resetQuiz(this.bar, this.quiz)
+
+    
   }
 
 

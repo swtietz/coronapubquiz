@@ -7,6 +7,10 @@
 				<a href="{{barPaymentLink+paymentAmount}}">Bezahle per Paypal direkt an {{bar}}!</a>
 			</div>
 
+			<div *ngIf="pubService.isOwner">
+				<button type="button" class="btn btn-primary btn-block" (click)="reset()">Quiz zurücksetzen</button>
+			</div>
+
 			<ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
 				
 				<ngb-panel class="container" *ngFor="let question of questions$ | async">

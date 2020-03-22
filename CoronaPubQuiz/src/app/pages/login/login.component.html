@@ -4,10 +4,11 @@
       <div class="card border-info">
         <div class="card-header">Login</div>
         <div class="card-body">
+          <p>Log in using user: "test1@test.de", password "123456" to become host of the Anzengruberin pubquiz.</p>
           <input type="text" class="form-control mb-2" placeholder="Email" required #email autofocus>
           <input type="password" class="form-control mb-2" placeholder="Password" #password required>
-            <button class="btn btn-lg btn-primary btn-block mb-1" (click)="authService.login(email.value, password.value)">Login</button>
-            <button class="btn btn-lg btn-primary btn-block mb-1" (click)="authService.register(email.value, password.value)">Registrieren</button>
+            <button class="btn pub_button btn-lg btn-primary btn-block mb-1" (click)="loginClicked(email, password)">Login</button>
+            <button class="btn pub_button btn-lg btn-primary btn-block mb-1" (click)="authService.register(email.value, password.value)">Registrieren</button>
         </div>
       </div>
     </div>

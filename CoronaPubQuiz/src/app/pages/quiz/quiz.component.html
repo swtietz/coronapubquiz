@@ -34,11 +34,15 @@
 
 <div *ngIf="pubService.isOwner" style="position:absolute; bottom: 0px; width: 100%;">
   <!-- IF THIS USER IS THE OWNER -->
-
+  <div class="row">
+    <div class="col-12" style="background-color: white;">
+      Moderatoren Ansicht
+    </div>
+  </div>
   <div class="container fixed-bottom" *ngFor="let question of questions | async">
     <div class="row "  *ngIf="question.active">
       <div class="col-12">
-        <button type="button" class="btn btn-primary btn-block" (click)="nextQuestion(question)">Nächste Runde</button>
+        <button type="button" class="btn btn-primary btn-block" (click)="nextQuestion(question)">Nächste Frage</button>
       </div>  
       <div class="col-12">
         Momentane Frage:
@@ -61,7 +65,7 @@
 
 
 
-  <div *ngIf="!pubService.isOwner">
+<div *ngIf="!pubService.isOwner">
   <div class="container" *ngFor="let question of questions | async">
     <div class="row" *ngIf="question.active">
       <div class="col-12">

@@ -9,7 +9,7 @@ import { PubService } from 'src/app/pub.service';
 import { Observable } from 'rxjs';
 
 
-import { flatMap } from 'rxjs/operators';
+import { flatMap , first} from 'rxjs/operators';
 
 
 import { AngularFireDatabase } from '@angular/fire/database';
@@ -43,6 +43,8 @@ export class QuizComponent implements OnInit, AfterViewInit {
   groupOrders: object;
   destroyStreams: any;
 
+
+
   quizname: string = "";
   quizcomplete: string = "";
 
@@ -66,7 +68,10 @@ export class QuizComponent implements OnInit, AfterViewInit {
     this.quiz = this.route.snapshot.paramMap.get('quizname');
     this.group = this.route.snapshot.paramMap.get('groupname');
     
-    this.quizService.getQuiz(this.bar, this.quiz).subscribe((quiz:Quiz) => {
+    console.log('quiz name from route', this.bar, this.quiz)
+
+    this.quizService.getQuiz(this.bar, this.quiz).subscribe((quiz:any) => {
+
       this.quizname = quiz.name;
       if(quiz.complete){
         this.router.navigate(['/bar/'+this.bar+'/'+this.quiz+'/'+this.group+'/result']);
@@ -94,13 +99,16 @@ export class QuizComponent implements OnInit, AfterViewInit {
         this.activeQuestion = questions.filter((q) => q.active)[0]
 
         console.log('this.activeQuestion', this.activeQuestion )
+        if(this.activeQuestion){
         
-        this.submissions.subscribe((submissions:Submission[])=>{
-        this.activeSubmission = submissions.filter((s) => s.questionId == this.activeQuestion.id && s.groupId == this.group)[0]
-        if (this.activeSubmission){
-          this.currentAnswer = this.activeSubmission.answer
+          this.submissions.subscribe((submissions:Submission[])=>{
+          this.activeSubmission = submissions.filter((s) => s.questionId == this.activeQuestion.id && s.groupId == this.group)[0]
+          if (this.activeSubmission){
+            this.currentAnswer = this.activeSubmission.answer
+          }
+        
+          })
         }
-      })
     })
     
     this.groups = this.groupService.getGroups(this.bar, this.quiz);
@@ -146,7 +154,7 @@ export class QuizComponent implements OnInit, AfterViewInit {
   nextQuestion(question) {
     this.quizService.setQuestionActive(this.bar, this.quiz, question.id, false)
 
-    this.questions.subscribe(questions => {
+    this.questions.pipe(first()).subscribe(questions => {
       const next_question = questions.find(q=>q.index === question.index+1)
       if (next_question){
         this.quizService.setQuestionActive(this.bar, this.quiz, next_question.id, true)
