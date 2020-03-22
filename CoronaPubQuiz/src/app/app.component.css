@@ -1,3 +1,6 @@
 :host {
     overflow: hidden;
 }
+.navbar {
+    background: transparent;
+}
