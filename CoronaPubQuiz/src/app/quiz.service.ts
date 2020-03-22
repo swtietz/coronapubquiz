@@ -131,13 +131,18 @@ export class QuizService {
   	this.firestore.collection<Question>('pubs/'+bar+'/quizzes/'+quiz+'/questions').doc(this.firestore.createId()).set(Object.assign({}, question))
   }
 
-  getSubmissions(bar, quiz, question): Observable<Submission[]>{
+  
+
+  getSubmissions(bar, quiz): Observable<Submission[]>{
     return this.firestore.collection<Submission>('pubs/'+bar+'/quizzes/'+quiz+'/submissions').valueChanges();
   }
 
+  /*
   getSubmission(bar, quiz, group, question, ): Observable<Submission>{
     return this.firestore.doc<Submission>('pubs/'+bar+'/quizzes/'+quiz+'/questions/'+question+'/submissions/'+group).valueChanges()
   }
+  */
+
 
   addSubmission(bar, quiz, questionId, groupId, answer): void {
     console.log('Adding submission', groupId+questionId)
