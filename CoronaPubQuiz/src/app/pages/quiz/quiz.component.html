@@ -24,7 +24,7 @@
     </table>
   </div>
 
-  <div class="container">
+  <div class="container video_container">
     <div class="row">
       <video #moderatorVideo autoplay playsinline></video>
       <div #audioParent class="d-none"></div>
@@ -85,16 +85,18 @@
         </div>
 
         <div class="d-flex flex-wrap mt-4 answers_wrapper">
-          <button type="button" [style.background-color]="currentAnswer=='A' ? 'purple': 'turquoise'" class="btn btn-primary btn-block" (click)="submit(question, 'A')">{{question.A}}</button>
-          <button type="button" [style.background-color]="currentAnswer=='B' ? 'purple': 'turquoise'" class="btn btn-primary btn-block" (click)="submit(question, 'B')">{{question.B}}</button>
-          <button type="button" [style.background-color]="currentAnswer=='C' ? 'purple': 'turquoise'" class="btn btn-primary btn-block" (click)="submit(question, 'C')">{{question.C}}</button>
-          <button type="button" [style.background-color]="currentAnswer=='D' ? 'purple': 'turquoise'" class="btn btn-primary btn-block" (click)="submit(question, 'D')">{{question.D}}</button>  
+          <button type="button" [ngClass]="currentAnswer === 'A' ? 'active' : ''" class="btn btn-primary btn-block answer" (click)="submit(question, 'A')">{{question.A}}</button>
+          <button type="button" [ngClass]="currentAnswer === 'B' ? 'active' : ''" class="btn btn-primary btn-block answer" (click)="submit(question, 'B')">{{question.B}}</button>
+          <button type="button" [ngClass]="currentAnswer === 'C' ? 'active' : ''" class="btn btn-primary btn-block answer" (click)="submit(question, 'C')">{{question.C}}</button>
+          <button type="button" [ngClass]="currentAnswer === 'C' ? 'active' : ''" class="btn btn-primary btn-block answer" (click)="submit(question, 'D')">{{question.D}}</button>  
 
 
       </div>
-      <div class="d-flex flex-wrap">
-      <div class="rounded-circle m-2 friend"></div>
-      <div class="rounded-circle m-2 friend"></div>
+      <div class="d-flex flex-wrap footer_wrapper">
+        <ng-container *ngFor="let groupMember of groupMembers | async">
+          <div class="rounded-circle m-2 text-center friend"><div class="d-inline icon">{{groupMember.icon}}</div></div>
+        </ng-container>
+        <p class="drink_list">10</p>
       </div>
     </div>
 

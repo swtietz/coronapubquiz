@@ -8,7 +8,7 @@
     </div>
 </div>
 
-<div class="container">
-<input type="text" class="form-control mb-2" placeholder="Gruppenname" required #newGroupName autofocus>
-<button type="button" class="btn btn-primary btn-block" (click)="create(newGroupName.value)" >Neue Gruppe erstellen</button>
+<div class="new_group_wrapper container">
+    <input type="text" class="form-control mb-2" placeholder="Gruppenname" required #newGroupName autofocus>
+    <button type="button" class="btn btn-primary btn-block pub_button" (click)="create(newGroupName.value)" >Neue Gruppe erstellen</button>
 </div>

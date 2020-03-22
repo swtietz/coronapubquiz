@@ -7,6 +7,8 @@
     font-family: 'Zeyada';
     color: black;
     text-align: left;
+
+    margin-bottom: 10px;
 }
 
 .join_group:hover {
@@ -15,4 +17,18 @@
 
 .container {
     padding: 0;
+}
+
+.new_group_wrapper {
+    position: absolute;
+    left: 30px;
+    bottom: 30px;
+
+    width: 250px;
+}
+
+.new_group_wrapper .pub_button {
+    position: relative;
+    left: 0px;
+    bottom: 0px;
 }
