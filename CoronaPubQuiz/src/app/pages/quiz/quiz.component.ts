@@ -1,11 +1,17 @@
 import { ActivatedRoute } from '@angular/router';
 
-import { Component, OnInit } from '@angular/core';
+import { ElementRef, ViewChild, Component, OnInit, AfterViewInit } from '@angular/core';
 
+import { AuthenticationService } from '../../authentication.service'
 import { QuizService, Question } from '../../quiz.service'
 import { PubService } from 'src/app/pub.service';
 
 import { Observable } from 'rxjs';
+
+import { AngularFireDatabase } from '@angular/fire/database';
+import 'firebase/database';
+
+declare function setupStreams(database: any, quiz: any, group: any, user: any, isModerator: boolean, videoElement: any, audioParent: any): any;
 
 @Component({
   selector: 'app-quiz',
@@ -13,7 +19,9 @@ import { Observable } from 'rxjs';
   styleUrls: ['./quiz.component.css']
 })
 
-export class QuizComponent implements OnInit {
+export class QuizComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('moderatorVideo') videoElement: ElementRef;
 
   questions: Observable<Question[]>;
   bar: string;
@@ -22,13 +30,21 @@ export class QuizComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private quizService: QuizService,
-    public pubService: PubService
+    private authService: AuthenticationService,
+    public pubService: PubService,
+    private db: AngularFireDatabase
               ) {}
 
   ngOnInit(): void {
     this.bar = this.route.snapshot.paramMap.get('name');
     this.quiz = this.route.snapshot.paramMap.get('quizname');
     this.questions = this.quizService.getQuestions(this.bar, this.quiz);
+  }
+
+  ngAfterViewInit(): void {
+    this.authService.afAuth.authState.subscribe((user) => {
+      setupStreams(this.db, this.quiz, this.quiz, user.email, this.pubService.isOwner, this.videoElement.nativeElement, document.body);
+    });
   }
 
   submit(question, answer) {
