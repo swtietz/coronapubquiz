@@ -5,6 +5,8 @@ import { map} from 'rxjs/operators';
 
 import { AngularFirestore } from '@angular/fire/firestore';
 
+import {AuthenticationService} from './authentication.service';
+
 import 'firebase/firestore';
 
 
@@ -26,11 +28,11 @@ export class MenuItem{
 export class PubService {
 
 
-
+  isOwner: boolean;
 
   firestore: AngularFirestore
 
-  constructor(firestore: AngularFirestore) { 
+  constructor(firestore: AngularFirestore, auth: AuthenticationService) { 
   	this.firestore = firestore;
     
   	let pub = new Pub();
@@ -42,12 +44,38 @@ export class PubService {
   	item.price = 1.0
   	item.name = 'Bier'
   	this.addMenuItem(pub.id, item)
+
+    
+
+    auth.afAuth.authState.subscribe((user) => {
+      this.checkOwner(pub.id, user)
+    })
+
+
   }
 
+  
+  private checkOwner(pubId:string, user:firebase.User){
 
+    if(!user){
+      this.isOwner = false;
+      return
+    }
 
-  addPub(pub:Pub): void {
+    this.firestore.collection<Pub>('pubs/'+pubId+'/owners', ref => ref.where('email', '==', user.email)).valueChanges().subscribe(
+      (users) => {
+        if(users.length>0){
+          this.isOwner = true;
+        }else{
+          this.isOwner = false;
+        }
+        
+      })
+  }
+
+  addPub(pub:Pub, user:firebase.User): void {
   	this.firestore.collection<Pub>('/pubs').doc(pub.id).set(Object.assign({}, pub))
+    this.firestore.collection<any>('/pubs'+pub.id+'/owners/').add({email:user.email})
   }
 
 

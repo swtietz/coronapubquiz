@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 
+import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
+
+import { Observable, of, pipe } from 'rxjs';
+
+export class User{
+	id: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +16,10 @@ export class AuthenticationService {
 
     private user: firebase.User;
     
-    constructor(public afAuth: AngularFireAuth) {
+    constructor(
+    	public afAuth: AngularFireAuth, 
+    	public firestore: AngularFirestore,
+    	) {
 		this.afAuth.authState.subscribe(user => {
 			if (user){
 				this.user = user;
@@ -21,6 +31,8 @@ export class AuthenticationService {
 
 	}
 
+
+
 	async login(email: string, password: string) {
 		var result = await this.afAuth.signInWithEmailAndPassword(email, password)
 
@@ -28,7 +40,14 @@ export class AuthenticationService {
 
 	async register(email: string, password: string) {
 	    var result = await this.afAuth.createUserWithEmailAndPassword(email, password)
+	    //this.createUser(email);
 	}
+
+	/*
+	createUser(email: string):void {
+		this.firestore.collection<User>('/users').doc(email).set({})
+	}
+	*/
 
 	async logout(){
 	    await this.afAuth.signOut();
@@ -38,6 +57,14 @@ export class AuthenticationService {
 	get isLoggedIn(): boolean {
 	    const  user  =  JSON.parse(localStorage.getItem('user'));
 	    return  user  !==  null;
+	}
+
+	/**
+	 *  WARNING: this is not an observable and is not updated when the value changes. 
+	 *  For such usecases use this.afAuth.authState.subscribe((user) => { ... instead
+	 */
+	getUser(): firebase.User {
+		return JSON.parse(localStorage.getItem('user'))
 	}
 
 }

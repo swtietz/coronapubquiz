@@ -28,7 +28,7 @@ export class PubComponent implements OnInit {
     private route: ActivatedRoute,
     public authService: AuthenticationService,
     private quizService: QuizService,
-    private pubService: PubService,
+    public pubService: PubService,
   ) {
     this.newItem = new MenuItem();
   }
