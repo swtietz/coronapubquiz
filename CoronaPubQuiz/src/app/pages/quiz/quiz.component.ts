@@ -1,6 +1,6 @@
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { ElementRef, ViewChild, Component, OnInit, AfterViewInit } from '@angular/core';
+import { ElementRef, ViewChild, Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 
 import { AuthenticationService } from '../../authentication.service'
 import { QuizService, Question, Submission } from '../../quiz.service'
@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 
 
 import { flatMap } from 'rxjs/operators';
+
 
 import { AngularFireDatabase } from '@angular/fire/database';
 import 'firebase/database';
@@ -26,6 +27,7 @@ declare function setupStreams(database: any, quiz: any, group: any, user: any, i
 export class QuizComponent implements OnInit, AfterViewInit {
 
   @ViewChild('moderatorVideo') videoElement: ElementRef;
+  @ViewChild('audioParent') audioParent: ElementRef;
 
 
   activeQuestion: Question;
@@ -35,6 +37,7 @@ export class QuizComponent implements OnInit, AfterViewInit {
   bar: string;
   quiz: string;
   group: string;
+  destroyStreams: any;
 
 
   currentAnswer:string = '';
@@ -66,6 +69,7 @@ export class QuizComponent implements OnInit, AfterViewInit {
     })
 
 
+
     this.questions.subscribe((questions:Question[])=>{
 
         this.activeQuestion = questions.filter((q) => q.active)[0]
@@ -93,11 +97,18 @@ export class QuizComponent implements OnInit, AfterViewInit {
     return this.quizService.getSubmission(this.bar, this.quiz, this.group, question.id)
   }
 
-  ngAfterViewInit(): void {
 
-    this.authService.afAuth.authState.subscribe((user) => {
-      setupStreams(this.db, this.quiz, this.quiz, user.email, this.pubService.isOwner, this.videoElement.nativeElement, document.body);
-    });
+  
+  
+  ngAfterViewInit(): void {
+    var user = this.authService.getUser();
+    if(user) {
+      this.destroyStreams = setupStreams(this.db, this.quiz, this.quiz, user.uid, this.pubService.isOwner, this.videoElement.nativeElement, this.audioParent.nativeElement);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroyStreams();
   }
 
   submit(question, answer) {

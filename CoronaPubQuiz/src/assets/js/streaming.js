@@ -1,9 +1,14 @@
+function uuidv4() {
+  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+}
+
 function setupStreams(firebase, quiz, group, user, isModerator, videoElement, audioParent) {
-  if(isModerator) {
-    user = "moderator";
-  }
-  console.log(firebase);
-  //var database = firebase.database().ref();
+  user = (isModerator) ? "moderator" : uuidv4();
+
+  console.log("user:", user);
+
   var database = firebase.database.app.firebase_.database().ref();
   var pubsubQuiz = database.child('quizzes/' + quiz);
   var pubsubGroup = database.child('groups/' + group);
@@ -29,15 +34,17 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
       if (pc.iceConnectionState === "failed" ||
           pc.iceConnectionState === "disconnected" ||
           pc.iceConnectionState === "closed") {
-        console.log(receiver + " disconnected");
+        if(pcs[receiver]) {
+          delete pcs[receiver];
 
-        delete pcs[receiver];
+          if(receiver == "moderator") {
+            videoElement.srcObject = undefined;
+          } else if(mediaObjects[receiver]) {
+            mediaObjects[receiver].remove();
+            delete mediaObjects[receiver];
+          }
 
-        if(receiver == "moderator") {
-          videoElement.srcObject = undefined;
-        } else if(mediaObjects[receiver]) {
-          mediaObjects[receiver].remove();
-          delete mediaObjects[receiver];
+          console.log(receiver + " disconnected");
         }
       }
     };
@@ -78,18 +85,25 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
     if (sender != user && ((isModerator && receiver == "moderator") || receiver == user || receiver == "all")) {
         if (isModerator && msg.request_video) {
           pcs[sender] = create_peer_connection(sender);
+          console.log(mediaStream);
           pcs[sender].addStream(mediaStream);
           pcs[sender].createOffer()
             .then(offer => pcs[sender].setLocalDescription(offer) )
             .then(() => sendMessage(user, sender, JSON.stringify({'sdp': pcs[sender].localDescription})));
+          
+          console.log(sender + " connected");
         } else if (msg.request_audio) {
-          mediaObjects[sender] = create_audio_element();
+          if(!pcs[sender]) {
+            mediaObjects[sender] = create_audio_element();
 
-          pcs[sender] = create_peer_connection(sender, mediaObjects[sender]);
-          pcs[sender].addStream(mediaStream);
-          pcs[sender].createOffer()
-            .then(offer => pcs[sender].setLocalDescription(offer) )
-            .then(() => sendMessage(user, sender, JSON.stringify({'sdp': pcs[sender].localDescription})));
+            pcs[sender] = create_peer_connection(sender, mediaObjects[sender]);
+            pcs[sender].addStream(mediaStream);
+            pcs[sender].createOffer()
+              .then(offer => pcs[sender].setLocalDescription(offer) )
+              .then(() => sendMessage(user, sender, JSON.stringify({'sdp': pcs[sender].localDescription})));
+            
+            console.log(sender + " connected");
+          }
         } else if (msg.new_moderator) {
           pcs["moderator"].close();
           pcs["moderator"] = create_peer_connection("moderator", videoElement);
@@ -107,11 +121,12 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
           }
         } else {
           console.error("unhandled pubsub message");
+          console.log("sender:", sender);
+          console.log("receiver: ", receiver);
+          console.log("msg: ", msg);
         }
     }
   };
-
-  pubsubQuiz.on('child_added', readMessage);
 
   if(isModerator) {
     // moderator
@@ -122,44 +137,74 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
 
     navigator.mediaDevices.getUserMedia({audio:true, video:true})
       .then(stream => videoElement.srcObject = stream) // show self
-      .then(stream => mediaStream = stream); // save stream object for peer connections
-
-    sendMessage("moderator", "all", JSON.stringify({new_moderator: true}));
+      .then(stream => mediaStream = stream) // save stream object for peer connections
+      .then(function() {
+        if(pcs != undefined && mediaObjects != undefined) {
+          pubsubQuiz.on('child_added', readMessage);
+          sendMessage("moderator", "all", JSON.stringify({new_moderator: true}));
+        }
+      });
   } else {
     // guest
 
     console.log("guest");
 
     navigator.mediaDevices.getUserMedia({audio: true})
-      .then(stream => mediaStream = stream); // save stream object for peer connections
+      .then(stream => mediaStream = stream) // save stream object for peer connections
+      .then(function() {
+        if(pcs != undefined && mediaObjects != undefined) {
+          var msg = pubsubGroup.push({ "user": user });
+          msg.remove();
 
-    pcs["moderator"] = create_peer_connection("moderator", videoElement);
-    sendMessage(user, "moderator", JSON.stringify({request_video: true}));
+          pubsubGroup.on('child_added', function(data) {
+            var receiver = data.val().user;
 
-    var msg = pubsubGroup.push({ "user": user });
-    msg.remove();
+            if(!pcs[receiver] && receiver != user) {
+              mediaObjects[receiver] = create_audio_element();
 
-    pubsubGroup.on('child_added', function(data) {
-      var receiver = data.val().user;
+              pcs[receiver] = create_peer_connection(receiver, mediaObjects[receiver]);
+              pcs[receiver].addStream(mediaStream);
 
-      mediaObjects[receiver] = create_audio_element();
+              setTimeout(function() {
+                if(pcs[receiver] && pcs[receiver].iceConnectionState == "new") {
+                  delete pcs[receiver];
 
-      pcs[receiver] = create_peer_connection(receiver, mediaObjects[receiver]);
-      pcs[receiver].addStream(mediaStream);
+                  if(mediaObjects[receiver]) {
+                    mediaObjects[receiver].remove();
+                    delete mediaObjects[receiver];
+                  }
 
-      setTimeout(function() {
-        if(pcs[receiver] && pcs[receiver].iceConnectionState == "new") {
-          delete pcs[receiver];
+                  console.log(receiver + " disconnected");
+                }
+              }, 10000);
 
-          if(mediaObjects[receiver]) {
-            mediaObjects[receiver].remove();
-            delete mediaObjects[receiver];
-          }
+              sendMessage(user, receiver, JSON.stringify({request_audio: true}));
+
+              console.log(receiver + " connected");
+            }
+          });
+
+          pcs["moderator"] = create_peer_connection("moderator", videoElement);
+          
+          pubsubQuiz.on('child_added', readMessage);
+          sendMessage(user, "moderator", JSON.stringify({request_video: true}));
         }
-      }, 10000);
-
-      sendMessage(user, receiver, JSON.stringify({request_audio: true}));
-    });
+      });
   }
 
+  return function destroyStreams() {
+    pubsubQuiz.off("child_added");
+    pubsubGroup.off("child_added");
+
+    for(var key in mediaObjects) {
+      mediaObjects[key].remove();
+    }
+
+    for(var key in pcs) {
+      pcs[key].close();
+    }
+
+    pcs = undefined;
+    mediaObjects = undefined;
+  }
 }

@@ -1,3 +1,12 @@
+.score_overview {
+    font-family: 'Zeyada';
+}
+
+.score_overview img{
+    height: 25px;
+    width: auto;
+}
+
 .friend {
     background-color: black; 
     height: 4em; 
@@ -6,7 +15,21 @@
 }
 
 .drink {
-    background-color: black; 
-    height: 4em; 
-    width: 4em;
+    background-color: #E70053; 
+    height: 60px; 
+    width: 60px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 25px;
+}
+
+.answers_wrapper {
+
+}
+
+.answer {
+    width: 50%;
 }
