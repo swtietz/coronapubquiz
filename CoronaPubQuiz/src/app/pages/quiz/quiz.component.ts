@@ -97,8 +97,10 @@ export class QuizComponent implements OnInit, AfterViewInit {
     return this.quizService.getSubmission(this.bar, this.quiz, this.group, question.id)
   }
 
-
-  
+  order(drink): void {
+    var user = this.authService.getUser();
+    this.quizService.orderDrink(this.bar, this.quiz, user, this.group, drink)
+  }
   
   ngAfterViewInit(): void {
     var user = this.authService.getUser();

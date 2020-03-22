@@ -74,6 +74,7 @@ export class QuizService {
                 return collection.map(b => {
                     let quiz = new Quiz();
                     quiz.name = b.name;
+                    quiz.id = b.uid
                     console.log(quiz);
                     return quiz;
                 });
@@ -93,8 +94,15 @@ export class QuizService {
     return this.questions$
   }
 
-
-
+  orderDrink(bar, quiz, user, group, drink) {
+    console.log(drink, group)
+    const orderId = this.firestore.createId()
+    this.firestore.collection('pubs/'+bar+'/quizzes/'+quiz+'/orders/').doc(orderId).set({
+      user: user.uid,
+      drink: drink,
+      group: group
+    })
+  }
 
 
   loadQuestionsWithID(bar, quiz): Observable<Question[]> {
