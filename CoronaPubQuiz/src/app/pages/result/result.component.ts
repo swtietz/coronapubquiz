@@ -73,7 +73,7 @@ export class ResultComponent implements OnInit {
     this.quizService.getOrders(this.bar, this.quiz).subscribe(orders=>{
       console.log('orders', orders)
       var user = this.authService.getUser();
-      this.orders = orders.filter(o => (o.user === user.uid)).map(o=>o.drink)//.reduce((str, x) => str + " " + x, "")
+      this.orders = orders.filter(o => (o.user === user.uid)).map(o=>o.drink)
       var counts = this.orders.reduce((b,c)=>((b[b.findIndex(d=>d.el===c)]||b[b.push({el:c,count:0})-1]).count++,b),[])
       console.log(counts)
       this.orderCounts = counts.reduce((b, c)=> c.el + "⨉" + c.count + "  " + b, "")
