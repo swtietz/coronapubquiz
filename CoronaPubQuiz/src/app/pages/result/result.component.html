@@ -1,31 +1,36 @@
-<p>result works!</p>
+<div class="container">
+	<div class="row">
+		<div class="col">
 
-
-  
-<ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
-	
-	<ngb-panel  title="{{question.question}} - Antwort: {{question.answer}}" class="container" *ngFor="let question of questions$ | async">
-		<ng-template ngbPanelContent>
-
-
-		<div *ngFor="let group of groups$ | async">
-
-			<div *ngFor="let submission of submissions$ | async">
-
-				<div *ngIf="submission.questionId == question.id && submission.quizId == quiz">
-					{{submission.barId}}, {{submission.quizId}}, {{submission.questionId}}
-					<div [style.background-color]="submission.groupId == group.name ? 'purple': 'turquoise'"> {{group.name}} </div>
-					<div [style.background-color]="submission.answer == group.answer ? 'green': 'red'"> {{submission.answer}} </div>
-
-
-					
-				</div>
+			<div class="alert alert-warning mb-4 text-center" role="alert">
+				<h1>{{orderCounts}}</h1>
+				<h3>Deine Rechnung ist {{paymentAmount}}€</h3>
+				<a href="{{barPaymentLink+paymentAmount}}">Bezahle per Paypal direkt an {{bar}}!</a>
 			</div>
+
+			<ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+				
+				<ngb-panel  title="{{question.question}} - Antwort: {{question.answer}}" class="container" *ngFor="let question of questions$ | async">
+					<ng-template ngbPanelContent>
+
+
+					<div *ngFor="let group of groups$ | async">
+
+						<div *ngFor="let submission of submissions$ | async">
+
+							<div *ngIf="submission.questionId == question.id && submission.quizId == quiz">
+								{{submission.barId}}, {{submission.quizId}}, {{submission.questionId}}
+								<div [style.background-color]="submission.groupId == group.name ? 'purple': 'turquoise'"> {{group.name}} </div>
+								<div [style.background-color]="submission.answer == group.answer ? 'green': 'red'"> {{submission.answer}} </div>
+
+							</div>
+						</div>
+					</div>
+				</ng-template>
+				</ngb-panel>
+
+			</ngb-accordion>
+
 		</div>
-	</ng-template>
-	</ngb-panel>
-
-</ngb-accordion>
-<!--
-
-  	-->
+	</div>
+</div>
