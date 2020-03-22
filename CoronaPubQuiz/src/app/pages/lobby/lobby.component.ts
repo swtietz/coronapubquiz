@@ -7,7 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 
 import { AuthenticationService } from '../../authentication.service'
-import { QuizService, Question } from '../../quiz.service'
+import { QuizService, Question, Quiz } from '../../quiz.service'
 import { PubService } from 'src/app/pub.service';
 
 
@@ -22,6 +22,8 @@ export class LobbyComponent implements OnInit {
   bar:string;
   quiz:string;
 
+  quizname: string = "";
+
   constructor(
   	private groupService:GroupService,
   	private route: ActivatedRoute,
@@ -31,6 +33,10 @@ export class LobbyComponent implements OnInit {
 
     this.bar = this.route.snapshot.paramMap.get('name');
     this.quiz = this.route.snapshot.paramMap.get('quizname');
+
+    this.quizService.getQuiz(this.bar, this.quiz).subscribe((quiz:Quiz) => {
+      this.quizname = quiz.name
+    })
   }
 
   ngOnInit(): void {

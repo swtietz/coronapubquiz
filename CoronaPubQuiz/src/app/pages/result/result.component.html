@@ -11,7 +11,7 @@
 				<div class="row" *ngIf="submission.questionId == question.id && submission.quizId == quiz && submission.groupId == group.name">
 
 					<!-- group -->
-					<div class="col-6" [style.background-color]="submission.groupId == group.name ? 'purple': 'turquoise'"> {{group.name}} </div>
+					<div class="col-6" [style.background-color]="submission.groupId == groupId ? 'purple': 'turquoise'"> {{group.name}} </div>
 
 					<div class="col-6" [style.background-color]="submission.answer == question.answer ? 'green': 'red'"> {{submission.answer}} </div>
 

@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ElementRef, ViewChild, Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 
 import { AuthenticationService, User } from '../../authentication.service'
-import { QuizService, Question, Submission } from '../../quiz.service'
+import { QuizService, Question, Submission, Quiz } from '../../quiz.service'
 import { PubService } from 'src/app/pub.service';
 
 import { Observable } from 'rxjs';
@@ -43,6 +43,8 @@ export class QuizComponent implements OnInit, AfterViewInit {
   groupOrders: object;
   destroyStreams: any;
 
+  quizname: string = "";
+
 
   currentAnswer:string = '';
 
@@ -64,6 +66,10 @@ export class QuizComponent implements OnInit, AfterViewInit {
     this.quiz = this.route.snapshot.paramMap.get('quizname');
     this.group = this.route.snapshot.paramMap.get('groupname');
     
+    this.quizService.getQuiz(this.bar, this.quiz).subscribe((quiz:Quiz) => {
+      this.quizname = quiz.name
+    })
+
     this.questions = this.quizService.getQuestions(this.bar, this.quiz);
 
     this.submissions = this.quizService.getSubmissions(this.bar, this.quiz)
