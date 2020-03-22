@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 
-import { Observable, of, pipe } from 'rxjs';
+import { Observable, of, pipe, BehaviorSubject } from 'rxjs';
 
 export class User{
 	id: string;
@@ -15,12 +15,20 @@ export class User{
 export class AuthenticationService {
 
     private user: firebase.User;
+
+    user$ : BehaviorSubject<firebase.User>;
     
     constructor(
     	public afAuth: AngularFireAuth, 
     	public firestore: AngularFirestore,
     	) {
+
+    	this.user$ = new BehaviorSubject(null) 
+
 		this.afAuth.authState.subscribe(user => {
+			this.user$.next(user)
+			
+			console.log('user changed', user)
 			if (user){
 				this.user = user;
 				localStorage.setItem('user', JSON.stringify(this.user));
@@ -31,6 +39,8 @@ export class AuthenticationService {
 
 	}
 
+    
+
 
 
 	async login(email: string, password: string) {
@@ -38,16 +48,31 @@ export class AuthenticationService {
 
 	}
 
+
+
 	async register(email: string, password: string) {
 	    var result = await this.afAuth.createUserWithEmailAndPassword(email, password)
-	    //this.createUser(email);
+	    this.createUser(email, email, '','');
 	}
 
-	/*
-	createUser(email: string):void {
-		this.firestore.collection<User>('/users').doc(email).set({})
+
+	registerAnonymous(name, icon){
+		let login$ = this.afAuth.signInAnonymously()
+		
+
+		//localStorage.setItem('user', JSON.stringify({}));
+		return login$
+
 	}
-	*/
+	
+	createUser(id:string, email: string, name: string, icon:string):void {
+		this.firestore.collection<User>('/users').doc(id).set({
+			email: email,
+			name:name,
+			icon:icon
+		})
+	}
+	
 
 	async logout(){
 	    await this.afAuth.signOut();

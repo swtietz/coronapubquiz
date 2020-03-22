@@ -1,0 +1,9 @@
+<p>Willkommen</p>
+
+
+<p>Bitte nenn uns deinen Namen:</p>
+<input type="text" class="form-control mb-2" placeholder="Name" required #name autofocus>
+<p>Wähle ein Emoji:</p>
+<input type="text" class="form-control mb-2" placeholder="Emoji" required #emoji autofocus>
+
+<button class="btn btn-lg btn-primary btn-block mb-1" (click)="clickConfirm(name.value, emoji.value)">Weiter</button>

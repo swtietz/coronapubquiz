@@ -17,7 +17,9 @@ import { PubComponent } from './pages/pub/pub.component';
 
 import { LoginComponent } from './pages/login/login.component';
 import { CreatorComponent } from './pages/creator/creator.component';
+import { WelcomeComponent } from './pages/welcome/welcome.component';
 
+//import {HasnameGuard } from './guards/hasname.guard'
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { CreatorComponent } from './pages/creator/creator.component';
     QuizComponent,
     PubComponent,
     LoginComponent,
-    CreatorComponent
+    CreatorComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +39,9 @@ import { CreatorComponent } from './pages/creator/creator.component';
     NgbModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    //HasnameGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
