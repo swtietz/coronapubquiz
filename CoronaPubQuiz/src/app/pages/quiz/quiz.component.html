@@ -3,10 +3,10 @@
 
   <div class="container">
     <div class="row">
-      <video #moderatorVideo></video>
+      <video #moderatorVideo autoplay playsinline></video>
       <div #audioParent class="d-none"></div>
     </div>
-    </div>
+  </div>
 
 <div *ngIf="pubService.isOwner" style="position:absolute; bottom: 0px; width: 100%;">
   <!-- IF THIS USER IS THE OWNER -->
