@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 import { QuizService, Question } from '../../quiz.service'
+import { PubService } from 'src/app/pub.service';
 
 import { Observable } from 'rxjs';
 
@@ -20,7 +21,8 @@ export class QuizComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-              private quizService: QuizService,
+    private quizService: QuizService,
+    public pubService: PubService
               ) {}
 
   ngOnInit(): void {
