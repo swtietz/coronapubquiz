@@ -2,18 +2,14 @@
 
 <div class="container pt-3">
   <div class="row justify-content-sm-center">
-    <div class="col-sm-10 col-md-6">
+    <div class="col-md-10 col-lg-6">
       <div class="card border-info">
         <div class="card-header">Login</div>
         <div class="card-body">
-          <div class="row">
-            <div class="col-md-8">
-                <input type="text" class="form-control mb-2" placeholder="Email" required #email autofocus>
-                <input type="password" class="form-control mb-2" placeholder="Password" #password required>
-                <button class="btn btn-lg btn-primary btn-block mb-1" (click)="authService.login(email.value, password.value)">Login</button>
-                <button class="btn btn-lg btn-primary btn-block mb-1" (click)="authService.register(email.value, password.value)">Registrieren</button>
-            </div>
-          </div>
+          <input type="text" class="form-control mb-2" placeholder="Email" required #email autofocus>
+          <input type="password" class="form-control mb-2" placeholder="Password" #password required>
+            <button class="btn btn-lg btn-primary btn-block mb-1" (click)="authService.login(email.value, password.value)">Login</button>
+            <button class="btn btn-lg btn-primary btn-block mb-1" (click)="authService.register(email.value, password.value)">Registrieren</button>
         </div>
       </div>
     </div>
