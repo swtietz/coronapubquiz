@@ -8,7 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { AuthenticationService } from '../../authentication.service'
 import { QuizService, Question, Quiz } from '../../quiz.service'
-import { PubService } from 'src/app/pub.service';
+import { PubService, Pub } from 'src/app/pub.service';
 
 
 @Component({
@@ -20,6 +20,7 @@ export class LobbyComponent implements OnInit {
 
   groups:Observable<any>;
   bar:string;
+  barname:string;
   quiz:string;
 
   quizname: string = "";
@@ -36,6 +37,9 @@ export class LobbyComponent implements OnInit {
 
     this.quizService.getQuiz(this.bar, this.quiz).subscribe((quiz:Quiz) => {
       this.quizname = quiz.name
+    })
+    this.pubService.getPub(this.bar).subscribe((pub:Pub) => {
+      this.barname = pub.name
     })
   }
 
