@@ -1,7 +1,3 @@
-<p>result works!</p>
-
-
-  
 <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
 	
 	<ngb-panel  title="{{question.question}} - Antwort: {{question.answer}}" class="container" *ngFor="let question of questions$ | async">
@@ -15,9 +11,9 @@
 				<div class="row" *ngIf="submission.questionId == question.id && submission.quizId == quiz && submission.groupId == group.name">
 
 					<!-- group -->
-					<div class="col-md-6 col-lg-6" [style.background-color]="submission.groupId == group.name ? 'purple': 'turquoise'"> {{group.name}} </div>
+					<div class="col-6" [style.background-color]="submission.groupId == group.name ? 'purple': 'turquoise'"> {{group.name}} </div>
 
-					<div class="col-md-6 col-lg-6" [style.background-color]="submission.answer == question.answer ? 'green': 'red'"> {{submission.answer}} </div>
+					<div class="col-6" [style.background-color]="submission.answer == question.answer ? 'green': 'red'"> {{submission.answer}} </div>
 
 
 					
