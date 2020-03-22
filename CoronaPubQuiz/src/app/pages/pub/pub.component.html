@@ -10,14 +10,14 @@
 			<div class="col-md-12 col-lg-6">
 				<h2>Quizzes</h2>
 				<div class="list-group" id="list-tab" role="tablist">
-					<a class="list-group-item list-group-item-action" *ngFor="let quiz of quizzes | async">{{quiz.name}}</a>
+					<div *ngFor="let quiz of quizzes | async">
+						<a class="list-group-item list-group-item-action" [routerLink]="['/bar', barId, quiz.id]">{{quiz.name}}</a>
+					</div>
 				</div>
 				<a class="btn btn-primary float-right mt-2" routerLinkActive="active" href="/bar/{{barId}}/create">
 					Quiz anlegen
 				</a>
 			</div>
-
-			
 
 			<div class="col-md-12 col-lg-6">
 				<h2>Paypal.me Link</h2>
@@ -38,7 +38,7 @@
 					<div class="alert alert-secondary fade show">
 						<strong>Neues Getränk oder Gericht auf die Karte packen:</strong>
 						<div>
-							<label for="typeahead-basic">Name:</label>
+							<label for="typeahead-basic">Emoji:</label>
 							<input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="newItem.name" />
 							<label for="typeahead-basic">Price:</label>
 							<input id="typeahead-basic" type="number" class="form-control" [(ngModel)]="newItem.price" />
