@@ -1,57 +1,76 @@
 
 <div id="main" style="position: relative;">
 
+<div *ngIf="pubService.isOwner" style="position:absolute; bottom: 0px; width: 100%;">
   <!-- IF THIS USER IS THE OWNER -->
-  <div *ngIf="pubService.isOwner" style="position:absolute; bottom: 0px; width: 100%;">
 
-    <div class="container fixed-bottom" *ngFor="let question of questions | async">
-      <div class="row "  *ngIf="question.active">
-        <div class="col-12">
-          <button type="button" class="btn btn-primary btn-block" (click)="nextQuestion(question)">Nächste Runde</button>
-        </div>  
-        <div class="col-12">
-          Momentane Frage:
-          <div class="card">
-            <div class="card-body">
-              <p class="card-text">{{question.question}}</p>
-            </div>
+  <div class="container fixed-bottom" *ngFor="let question of questions | async">
+    <div class="row">
+      <video  #moderatorVideo></video>
+    </div>
+    <div class="row "  *ngIf="question.active">
+      <div class="col-12">
+        <button type="button" class="btn btn-primary btn-block" (click)="nextQuestion(question)">Nächste Runde</button>
+      </div>  
+      <div class="col-12">
+        Momentane Frage:
+        <div class="card">
+          <div class="card-body">
+            <p class="card-text">{{question.question}}</p>
           </div>
-          <div class="d-flex flex-wrap">
-            <button type="button" class="btn btn-primary btn-block" >{{question.A}}</button>
-            <button type="button" class="btn btn-primary btn-block" >{{question.B}}</button>
-            <button type="button" class="btn btn-primary btn-block" >{{question.C}}</button>
-            <button type="button" class="btn btn-primary btn-block" >{{question.D}}</button>
-          </div>
+        </div>
+        <div class="d-flex flex-wrap mt-4">
+          <button type="button" class="btn btn-primary btn-block" >{{question.A}}</button>
+          <button type="button" class="btn btn-primary btn-block" >{{question.B}}</button>
+          <button type="button" class="btn btn-primary btn-block" >{{question.C}}</button>
+          <button type="button" class="btn btn-primary btn-block" >{{question.D}}</button>
         </div>
       </div>
     </div>
-
   </div>
-
-
+</div>
 
 
 
   <div *ngIf="!pubService.isOwner">
-
-    <div class="container fixed-bottom" *ngFor="let question of questions | async">
-      <div class="row" *ngIf="question.active"> 
-        <div class="col-12">
-          <div class="card">
-            <div class="card-body">
-              <p class="card-text">{{question.question}}</p>
-            </div>
-          </div>
-          <div class="d-flex flex-wrap">
-            <button type="button" class="btn btn-primary btn-block" (click)="submit(question, 'A')">{{question.A}}</button>
-            <button type="button" class="btn btn-primary btn-block" (click)="submit(question, 'B')">{{question.B}}</button>
-            <button type="button" class="btn btn-primary btn-block" (click)="submit(question, 'C')">{{question.C}}</button>
-            <button type="button" class="btn btn-primary btn-block" (click)="submit(question, 'D')">{{question.D}}</button>
+  <div class="container" *ngFor="let question of questions | async">
+    <div class="row">
+      <video  #moderatorVideo></video>
+    </div>
+    <div class="row" *ngIf="question.active">
+      <div class="col-12">
+  
+      </div>
+    </div>
+    <div class="row" *ngIf="question.active">  
+      <div class="col-12 fixed-bottom">
+        <div class="d-flex flex-wrap justify-content-end">
+          <div class="rounded-circle m-2 drink">🍺</div>
+        </div>
+        <div class="d-flex flex-wrap justify-content-end">
+          <div class="rounded-circle m-2 drink">🍹</div>
+        </div>
+        <div class="d-flex flex-wrap justify-content-end">
+          <div class="rounded-circle m-2 drink">🥃</div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <p class="card-text">{{question.question}}</p>
           </div>
         </div>
+        <div class="d-flex flex-wrap mt-4">
+          <button type="button" class="btn btn-primary btn-block" (click)="submit(question, 'A')">{{question.A}}</button>
+          <button type="button" class="btn btn-primary btn-block" (click)="submit(question, 'B')">{{question.B}}</button>
+          <button type="button" class="btn btn-primary btn-block" (click)="submit(question, 'C')">{{question.C}}</button>
+          <button type="button" class="btn btn-primary btn-block" (click)="submit(question, 'D')">{{question.D}}</button>  
+      </div>
+      <div class="d-flex flex-wrap">
+      <div class="rounded-circle m-2 friend"></div>
+      <div class="rounded-circle m-2 friend"></div>
       </div>
     </div>
 
   </div>
 
+</div>
 </div>

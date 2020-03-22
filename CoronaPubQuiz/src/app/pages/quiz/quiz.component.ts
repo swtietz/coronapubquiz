@@ -1,13 +1,21 @@
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { Component, OnInit } from '@angular/core';
+import { ElementRef, ViewChild, Component, OnInit, AfterViewInit } from '@angular/core';
 
+import { AuthenticationService } from '../../authentication.service'
 import { QuizService, Question } from '../../quiz.service'
 import { PubService } from 'src/app/pub.service';
 
 import { Observable } from 'rxjs';
 
-import { AuthenticationService } from 'src/app/authentication.service'
+
+
+
+import { AngularFireDatabase } from '@angular/fire/database';
+import 'firebase/database';
+
+declare function setupStreams(database: any, quiz: any, group: any, user: any, isModerator: boolean, videoElement: any, audioParent: any): any;
+
 
 @Component({
   selector: 'app-quiz',
@@ -15,7 +23,9 @@ import { AuthenticationService } from 'src/app/authentication.service'
   styleUrls: ['./quiz.component.css']
 })
 
-export class QuizComponent implements OnInit {
+export class QuizComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('moderatorVideo') videoElement: ElementRef;
 
   questions: Observable<Question[]>;
   bar: string;
@@ -27,6 +37,8 @@ export class QuizComponent implements OnInit {
     private quizService: QuizService,
     public pubService: PubService,
     private router: Router,
+    private db: AngularFireDatabase
+
               ) {}
 
   ngOnInit(): void {
@@ -48,6 +60,12 @@ export class QuizComponent implements OnInit {
   }
   
 
+
+  ngAfterViewInit(): void {
+    this.authService.afAuth.authState.subscribe((user) => {
+      setupStreams(this.db, this.quiz, this.quiz, user.email, this.pubService.isOwner, this.videoElement.nativeElement, document.body);
+    });
+  }
 
   submit(question, answer) {
     this.quizService.addSubmission(this.bar, this.quiz, question.id, "2bgXVXpdMOZhoFSsejLU", answer)

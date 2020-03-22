@@ -1,57 +1,63 @@
-<p>creator works!</p>
-
-<div class="container" >
-    <div class="d-flex flex-wrap">
-        <label for="typeahead-basic">Quiz Titel</label>
-        <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="newQuiz.name" />
-    </div>
-    
-	Fragen:
-	<div class="card" *ngFor="let question of questions">
-		<div class="card-body">
-			<p class="card-text">
-                {{question.question}}: {{question.answer}}</p>
-                <div *ngIf="question.A !== null ">
-                    {{question.A}}, {{question.B}}, {{question.C}}, {{question.D}}
-                </div>
-			<button type="button" class="btn btn-primary btn-block" (click)="clickDeleteQuestion(question)">
-				Löschen
-			</button>
-		</div>
-	</div>
-
-	<button type="button" class="btn btn-primary btn-block" (click)="clickAddNewQuestion()">
-		Frage hinzufügen
-	</button>
-
-	<div class="container" *ngIf="showAddQuestion">
-		<div class="row">
-			<div class="d-flex flex-wrap">
-				Neue Frage hinzufügen:
-				<div>
-					<label for="typeahead-basic">Fragetext:</label>
-					<input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="newQuestion.question" />
-					<label for="typeahead-basic">A:</label>
-                    <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="newQuestion.A"/>
-					<input id="typeahead-basic" type="checkbox" class="form-control" [(ngModel)]="newQuestion.answer" ngValue="A"/>
-					<label for="typeahead-basic">B:</label>
-                    <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="newQuestion.B" />
-					<input id="typeahead-basic" type="checkbox" class="form-control" [(ngModel)]="newQuestion.answer" ngValue="B"/>
-					<label for="typeahead-basic">C:</label>
-                    <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="newQuestion.C" />
-					<input id="typeahead-basic" type="checkbox" class="form-control" [(ngModel)]="newQuestion.answer" ngValue="C"/>
-					<label for="typeahead-basic">D:</label>
-                    <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="newQuestion.D" />
-                    <input id="typeahead-basic" type="checkbox" class="form-control" [(ngModel)]="newQuestion.answer" ngValue="D"/>
+<div class="container-fluid">
+	<div class="row">
+			<div class="col-md-12 col-lg-6">
+				<label for="typeahead-basic">Quiz Titel</label>
+				<div class="form-row align-items-center">
+					<input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="newQuiz.name" />
+					
 				</div>
-				<button type="button" class="btn btn-primary btn-block" (click)="clickSaveNewQuestion()">
-					Speichere Frage
-				</button>
+			
+				<h4>Fragen:</h4>
+				<p *ngIf="questions.length < 1">Keine fragen noch...</p>
+				<div class="card" *ngFor="let question of questions">
+					<div class="card-body">
+						<p class="card-text">Question: {{question.question}}, Answer:{{question.answer}}</p>
+						<div *ngIf="question.A !== null ">
+							A:{{question.A}}
+							B:{{question.B}}
+							C:{{question.C}}
+							D:{{question.D}}
+						</div>
+						<button type="button" class="btn btn-danger float-right" (click)="clickDeleteQuestion(question)">
+							Löschen
+						</button>
+						
+					</div>
+				</div>
+			
+				<div class="d-flex flex-wrap justify-content-between m-5">
+					<button type="button" class="btn btn-primary" (click)="clickAddNewQuestion()">
+						Frage hinzufügen
+					</button>
+					<button type="button" class="btn btn-success ml-2" (click)="clickSaveQuiz()">
+						Speichere Quiz
+					</button>
+				</div>
 			</div>
-		</div>
-    </div>
-    
-    <button type="button" class="btn btn-primary btn-block" (click)="clickSaveQuiz()">
-        Speichere Quiz
-    </button>
+
+			<div class="col-md-12 col-lg-6 " *ngIf="showAddQuestion">
+				<div class="alert alert-secondary fade show">
+					<strong>Neue Frage hinzufügen:</strong>
+					<div>
+						<label for="typeahead-basic">Fragetext:</label>
+						<input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="newQuestion.question" />
+						<label for="typeahead-basic">A:</label>
+						<input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="newQuestion.A"/>
+						<input id="typeahead-basic" type="checkbox" class="form-control" [(ngModel)]="newQuestion.answer" ngValue="A"/>
+						<label for="typeahead-basic">B:</label>
+						<input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="newQuestion.B" />
+						<input id="typeahead-basic" type="checkbox" class="form-control" [(ngModel)]="newQuestion.answer" ngValue="B"/>
+						<label for="typeahead-basic">C:</label>
+						<input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="newQuestion.C" />
+						<input id="typeahead-basic" type="checkbox" class="form-control" [(ngModel)]="newQuestion.answer" ngValue="C"/>
+						<label for="typeahead-basic">D:</label>
+						<input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="newQuestion.D" />
+						<input id="typeahead-basic" type="checkbox" class="form-control" [(ngModel)]="newQuestion.answer" ngValue="D"/>	
+					</div>
+					<button type="button" class="btn btn-primary btn-block" (click)="clickSaveNewQuestion()">
+						Speichere Frage
+					</button>
+				</div>
+			</div>
+	</div>
 </div>
