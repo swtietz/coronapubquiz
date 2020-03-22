@@ -7,7 +7,7 @@ import { PubComponent } from './pages/pub/pub.component';
 import { LoginComponent } from './pages/login/login.component';
 import { CreatorComponent } from './pages/creator/creator.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
-
+import { LobbyComponent } from './pages/lobby/lobby.component';
 //import {HasnameGuard} from './guards/hasname.guard';
 
 //import { AngularFireAuthGuard, isNotAnonymous, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
@@ -17,8 +17,12 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
 const routes: Routes = [
   { path: 'bar/login', component: LoginComponent },
   { path: 'bar/:name/create', component: CreatorComponent },
+  
+  { path: 'bar/:name/:quizname/:groupname', component: QuizComponent},  
   { path: 'bar/:name/:quizname/:groupname/welcome', component: WelcomeComponent },  
-  { path: 'bar/:name/:quizname', component: QuizComponent},
+
+  { path: 'bar/:name/:quizname', component: LobbyComponent },
+  
 
   { path: 'bar/:name', component: PubComponent },
   

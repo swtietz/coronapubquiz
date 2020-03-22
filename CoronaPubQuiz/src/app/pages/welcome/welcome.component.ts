@@ -30,9 +30,11 @@ export class WelcomeComponent implements OnInit {
   clickConfirm(name, emoji): void {
 
   	this.authService.registerAnonymous(name, emoji).then((result:any) => {
-  		this.authService.createUser(result.user.uid, '', name, emoji)
-  		this.router.navigate(['/bar/'+this.bar+'/'+this.quiz]);
-  		console.log('navigated')
+  		this.authService.createUser(result.user.uid, '', name, emoji);
+  		this.router.navigate(['/bar/'+this.bar+'/'+this.quiz+ '/'+ this.group]);
+  		console.log('navigated', this.group);
+
+  		
   	})
     
     

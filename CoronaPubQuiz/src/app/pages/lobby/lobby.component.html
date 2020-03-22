@@ -1,0 +1,7 @@
+<p>lobby works!</p>
+
+
+<div class="container" *ngFor="let group of groups | async">
+{{group.name}} <button type="button" class="btn btn-primary btn-block" (click)="join(group)" >Beitreten</button>
+
+</div>

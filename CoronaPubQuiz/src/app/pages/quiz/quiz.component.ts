@@ -30,6 +30,7 @@ export class QuizComponent implements OnInit, AfterViewInit {
   questions: Observable<Question[]>;
   bar: string;
   quiz: string;
+  group: string;
 
   constructor(
     private authService:AuthenticationService,
@@ -44,15 +45,15 @@ export class QuizComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.bar = this.route.snapshot.paramMap.get('name');
     this.quiz = this.route.snapshot.paramMap.get('quizname');
+    this.group = this.route.snapshot.paramMap.get('groupname');
     this.questions = this.quizService.getQuestions(this.bar, this.quiz);
 
     
     this.authService.user$.subscribe((user) => { 
-      console.log('user in guard', user)
       if(!user){
-        this.router.navigate(['/bar/'+this.bar+'/'+this.quiz+'/'+'group1'+'/welcome']);
+        this.router.navigate(['/bar/'+this.bar+'/'+this.quiz+'/'+this.group+'/welcome']);
       }else{
-        this.router.navigate(['/bar/'+this.bar+'/'+this.quiz]);
+        this.router.navigate(['/bar/'+this.bar+'/'+this.quiz+'/'+this.group]);
       }
     })
 

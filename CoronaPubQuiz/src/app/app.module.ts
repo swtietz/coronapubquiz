@@ -18,6 +18,7 @@ import { PubComponent } from './pages/pub/pub.component';
 import { LoginComponent } from './pages/login/login.component';
 import { CreatorComponent } from './pages/creator/creator.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
+import { LobbyComponent } from './pages/lobby/lobby.component';
 
 //import {HasnameGuard } from './guards/hasname.guard'
 
@@ -28,7 +29,8 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
     PubComponent,
     LoginComponent,
     CreatorComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    LobbyComponent
   ],
   imports: [
     BrowserModule,
