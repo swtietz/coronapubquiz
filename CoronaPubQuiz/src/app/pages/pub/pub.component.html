@@ -1,4 +1,9 @@
 
+
+<div *ngIf="!pubService.isOwner">
+	Willkommen in der Bar
+</div>
+
 <div *ngIf="pubService.isOwner">
 <div class="container" >
 	<div class="row">
