@@ -136,3 +136,10 @@ video.moderator {
         transform: translateY(0px);
     }
 }
+
+
+
+.video{
+    background: transparent url('https://via.placeholder.com/350.png?text=Moderator%20offline') 50% 50% / cover repeat ;
+    background-size: 50%;
+}
