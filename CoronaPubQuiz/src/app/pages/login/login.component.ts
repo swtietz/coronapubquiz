@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
 
   loginClicked(email, password): void{
   	this.authService.login(email.value, password.value).then(() => {
-  		this.router.navigate(['/bar/anze/history_quiz/']);
+  		this.router.navigate(['/bar/anze/']);
   	})
   }
 

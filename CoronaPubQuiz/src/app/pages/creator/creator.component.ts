@@ -43,8 +43,16 @@ export class CreatorComponent implements OnInit {
 
   clickSaveQuiz() {
     const quizId = this.quizService.addQuiz(this.barId, this.newQuiz.name)
+    let i = 0;
     this.questions.forEach(question => {
-      this.quizService.addQuestion(this.barId, quizId, question)      
+      question.index = i;
+      if (i == 0){
+        question.active = true;
+      }else{
+        question.active = false;
+      }
+      this.quizService.addQuestion(this.barId, quizId, question)    
+      i+=1;  
     });
   }
 }

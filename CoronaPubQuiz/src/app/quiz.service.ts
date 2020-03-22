@@ -187,7 +187,7 @@ export class QuizService {
   }
 
 
-  resetQuiz(bar, quiz,): void {
+  async resetQuiz(bar, quiz,): Promise<any> {
 
 
     this.getQuestions(bar, quiz).pipe(take(1)).subscribe(
@@ -199,6 +199,15 @@ export class QuizService {
       }
     )
 
+    const qry = await this.firestore.collection<Submission>('pubs/'+bar+'/quizzes/'+quiz+'/submissions').ref.get();
+    qry.forEach(doc => {
+      doc.ref.delete();
+    });
+
+    const qry_order = await this.firestore.collection<Order>('pubs/'+bar+'/quizzes/'+quiz+'/orders').ref.get();
+    qry_order.forEach(doc => {
+      doc.ref.delete();
+    });
     
   }
 
