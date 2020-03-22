@@ -103,7 +103,7 @@ export class QuizComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     var user = this.authService.getUser();
     if(user) {
-      this.destroyStreams = setupStreams(this.db, this.quiz, this.quiz, user.uid, this.pubService.isOwner, this.videoElement.nativeElement, this.audioParent.nativeElement);
+      this.destroyStreams = setupStreams(this.db, this.quiz, this.quiz + "_" + this.group, user.uid, this.pubService.isOwner, this.videoElement.nativeElement, this.audioParent.nativeElement);
     }
   }
 
