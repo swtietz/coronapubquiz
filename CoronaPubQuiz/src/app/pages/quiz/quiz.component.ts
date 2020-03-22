@@ -66,8 +66,13 @@ export class QuizComponent implements OnInit, AfterViewInit {
     this.group = this.route.snapshot.paramMap.get('groupname');
     
     this.questions = this.quizService.getQuestions(this.bar, this.quiz);
+
+    this.submissions = this.quizService.getSubmissions(this.bar, this.quiz)
+    
+
     this.groupMembers = this.authService.usersByGroup(this.group);
     console.log(this.groupMembers);
+
     this.authService.user$.subscribe((user) => { 
       if(!user){
         this.router.navigate(['/bar/'+this.bar+'/'+this.quiz+'/'+this.group+'/welcome']);
@@ -79,10 +84,12 @@ export class QuizComponent implements OnInit, AfterViewInit {
     this.questions.subscribe((questions:Question[])=>{
 
         this.activeQuestion = questions.filter((q) => q.active)[0]
-        this.submissions = this.quizService.getSubmissions(this.bar, this.quiz, this.activeQuestion.id)
+        
         this.submissions.subscribe((submissions:Submission[])=>{
         this.activeSubmission = submissions.filter((s) => s.questionId == this.activeQuestion.id && s.groupId == this.group)[0]
-        this.currentAnswer = this.activeSubmission.answer
+        if (this.activeSubmission){
+          this.currentAnswer = this.activeSubmission.answer
+        }
       })
     })
     
@@ -98,9 +105,11 @@ export class QuizComponent implements OnInit, AfterViewInit {
     })
   }
   
+  /*
   getCurrentSubmission(question:Question): Observable<Submission>{
     return this.quizService.getSubmission(this.bar, this.quiz, this.group, question.id)
   }
+  */
 
   order(drink): void {
     var user = this.authService.getUser();

@@ -1,0 +1,31 @@
+<p>result works!</p>
+
+
+  
+<ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+	
+	<ngb-panel  title="{{question.question}} - Antwort: {{question.answer}}" class="container" *ngFor="let question of questions$ | async">
+		<ng-template ngbPanelContent>
+
+
+		<div *ngFor="let group of groups$ | async">
+
+			<div *ngFor="let submission of submissions$ | async">
+
+				<div *ngIf="submission.questionId == question.id && submission.quizId == quiz">
+					{{submission.barId}}, {{submission.quizId}}, {{submission.questionId}}
+					<div [style.background-color]="submission.groupId == group.name ? 'purple': 'turquoise'"> {{group.name}} </div>
+					<div [style.background-color]="submission.answer == group.answer ? 'green': 'red'"> {{submission.answer}} </div>
+
+
+					
+				</div>
+			</div>
+		</div>
+	</ng-template>
+	</ngb-panel>
+
+</ngb-accordion>
+<!--
+
+  	-->
