@@ -13,6 +13,7 @@ import 'firebase/firestore';
 export class Pub{
   id: string;
   name: string;
+  paymentLink: string;
 }
 
 export class MenuItem{
@@ -78,6 +79,10 @@ export class PubService {
     this.firestore.collection<any>('/pubs'+pub.id+'/owners/').add({email:user.email})
   }
 
+  getPub(pubId): Observable<Pub> {
+  	let pub$ = this.firestore.collection('pubs/').doc<Pub>(pubId).valueChanges()
+    return pub$
+  }
 
   addMenuItem(pubId, menuItem:MenuItem): void {
   	this.firestore.collection<Pub>('/pubs/'+pubId+'/menu').doc(menuItem.id).set(Object.assign({}, menuItem))

@@ -35,8 +35,8 @@ export class PubComponent implements OnInit {
 
   ngOnInit(): void {
     this.barId = this.route.snapshot.paramMap.get('name');
-
     this.quizzes = this.quizService.getQuizzes(this.barId);
+    this.pub = this.pubService.getPub(this.barId);
     this.menu = this.pubService.getMenuItems(this.barId);
   }
 

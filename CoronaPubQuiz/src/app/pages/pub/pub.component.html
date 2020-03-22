@@ -6,7 +6,7 @@
 
 <div>
 	<div class="container" *ngIf="pubService.isOwner">
-		<div class="row">
+		<div class="row" *ngIf="pub | async as pubO">
 			<div class="col-md-12 col-lg-6">
 				<h2>Quizzes</h2>
 				<div class="list-group" id="list-tab" role="tablist">
@@ -17,7 +17,12 @@
 				</a>
 			</div>
 
+			
+
 			<div class="col-md-12 col-lg-6">
+				<h2>Paypal.me Link</h2>
+				<input type="url" placeholder="Paypal.me link" class="form-control" [(ngModel)]="pubO.paymentLink"/>
+
 				<h2>Getränke Karte</h2>
 				<div class="list-group" id="list-tab" role="tablist">
 					<div class="list-group-item list-group-item-action align-middle" *ngFor="let item of menu | async">{{item.name}}: {{item.price}}€
