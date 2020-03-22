@@ -3,4 +3,5 @@
 }
 .navbar {
     background: transparent;
+    z-index: 100;
 }

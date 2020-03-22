@@ -1,12 +1,12 @@
 <!-- Toolbar -->
 
-<!--
+
 <nav class="navbar">
   <p></p>
-  <button *ngIf="auth.isLoggedIn" type="button" class="btn btn-primary" (click)="auth.logout()">Logout</button>
-  <button *ngIf="!auth.isLoggedIn" type="button" class="btn btn-primary" routerLink="/bar/login">Pub Betreiber Login</button>
+  <button *ngIf="auth.isLoggedIn" type="button" class="btn btn-primary pub_button" (click)="auth.logout()">Logout</button>
+  <button *ngIf="!auth.isLoggedIn" type="button" class="btn btn-primary pub_button" routerLink="/bar/login">Pub Betreiber Login</button>
 </nav>
--->
+
 <div class="content" role="main">
   <router-outlet></router-outlet>
 </div>
