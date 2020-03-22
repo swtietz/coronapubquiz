@@ -2,7 +2,7 @@
 <nav class="navbar navbar-light bg-light">
   <div>Hello!</div>
   <button *ngIf="auth.isLoggedIn" type="button" class="btn btn-primary" (click)="auth.logout()">Logout</button>
-  <button *ngIf="!auth.isLoggedIn" type="button" class="btn btn-primary" routerLink="/login">Login</button>
+  <button *ngIf="!auth.isLoggedIn" type="button" class="btn btn-primary" routerLink="/bar/login">Pub Betreiber Login</button>
 </nav>
 
 <div class="content" role="main">

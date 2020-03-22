@@ -3,13 +3,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ElementRef, ViewChild, Component, OnInit, AfterViewInit } from '@angular/core';
 
 import { AuthenticationService } from '../../authentication.service'
-import { QuizService, Question } from '../../quiz.service'
+import { QuizService, Question, Submission } from '../../quiz.service'
 import { PubService } from 'src/app/pub.service';
 
 import { Observable } from 'rxjs';
 
 
-
+import { flatMap } from 'rxjs/operators';
 
 import { AngularFireDatabase } from '@angular/fire/database';
 import 'firebase/database';
@@ -27,10 +27,18 @@ export class QuizComponent implements OnInit, AfterViewInit {
 
   @ViewChild('moderatorVideo') videoElement: ElementRef;
 
+
+  activeQuestion: Question;
+  activeSubmission: Submission;
   questions: Observable<Question[]>;
+  submissions: Observable<Submission[]>
   bar: string;
   quiz: string;
   group: string;
+
+
+  currentAnswer:string = '';
+
 
   constructor(
     private authService:AuthenticationService,
@@ -58,18 +66,42 @@ export class QuizComponent implements OnInit, AfterViewInit {
     })
 
 
+    this.questions.subscribe((questions:Question[])=>{
+
+        this.activeQuestion = questions.filter((q) => q.active)[0]
+        this.submissions = this.quizService.getSubmissions(this.bar, this.quiz, this.activeQuestion.id)
+        this.submissions.subscribe((submissions:Submission[])=>{
+        this.activeSubmission = submissions.filter((s) => s.questionId == this.activeQuestion.id && s.groupId == this.group)[0]
+        this.currentAnswer = this.activeSubmission.answer
+        
+
+      })
+
+    })
+
+
+
+    
+
+    
+
+    
+
   }
   
-
+  getCurrentSubmission(question:Question): Observable<Submission>{
+    return this.quizService.getSubmission(this.bar, this.quiz, this.group, question.id)
+  }
 
   ngAfterViewInit(): void {
+
     this.authService.afAuth.authState.subscribe((user) => {
       setupStreams(this.db, this.quiz, this.quiz, user.email, this.pubService.isOwner, this.videoElement.nativeElement, document.body);
     });
   }
 
   submit(question, answer) {
-    this.quizService.addSubmission(this.bar, this.quiz, question.id, "2bgXVXpdMOZhoFSsejLU", answer)
+    this.quizService.addSubmission(this.bar, this.quiz, question.id, this.group, answer)
   }
 
   nextQuestion(question) {

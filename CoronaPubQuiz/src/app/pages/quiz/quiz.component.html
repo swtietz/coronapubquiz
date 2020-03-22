@@ -20,10 +20,10 @@
           </div>
         </div>
         <div class="d-flex flex-wrap mt-4">
-          <button type="button" class="btn btn-primary btn-block" >{{question.A}}</button>
-          <button type="button" class="btn btn-primary btn-block" >{{question.B}}</button>
-          <button type="button" class="btn btn-primary btn-block" >{{question.C}}</button>
-          <button type="button" class="btn btn-primary btn-block" >{{question.D}}</button>
+          <button type="button" class="col-6 btn btn-primary btn-block" >{{question.A}}</button>
+          <button type="button" class="col-6 btn btn-primary btn-block" >{{question.B}}</button>
+          <button type="button" class="col-6 btn btn-primary btn-block" >{{question.C}}</button>
+          <button type="button" class="col-6 btn btn-primary btn-block" >{{question.D}}</button>
         </div>
       </div>
     </div>
@@ -59,10 +59,10 @@
           </div>
         </div>
         <div class="d-flex flex-wrap mt-4">
-          <button type="button" class="btn btn-primary btn-block" (click)="submit(question, 'A')">{{question.A}}</button>
-          <button type="button" class="btn btn-primary btn-block" (click)="submit(question, 'B')">{{question.B}}</button>
-          <button type="button" class="btn btn-primary btn-block" (click)="submit(question, 'C')">{{question.C}}</button>
-          <button type="button" class="btn btn-primary btn-block" (click)="submit(question, 'D')">{{question.D}}</button>  
+          <button type="button" [style.background-color]="currentAnswer=='A' ? 'purple': 'turquoise'" class="btn btn-primary btn-block" (click)="submit(question, 'A')">{{question.A}}</button>
+          <button type="button" [style.background-color]="currentAnswer=='B' ? 'purple': 'turquoise'" class="btn btn-primary btn-block" (click)="submit(question, 'B')">{{question.B}}</button>
+          <button type="button" [style.background-color]="currentAnswer=='C' ? 'purple': 'turquoise'" class="btn btn-primary btn-block" (click)="submit(question, 'C')">{{question.C}}</button>
+          <button type="button" [style.background-color]="currentAnswer=='D' ? 'purple': 'turquoise'" class="btn btn-primary btn-block" (click)="submit(question, 'D')">{{question.D}}</button>  
       </div>
       <div class="d-flex flex-wrap">
       <div class="rounded-circle m-2 friend"></div>
