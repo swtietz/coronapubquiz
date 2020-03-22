@@ -9,21 +9,16 @@
           <th>
             <img src="./assets/media/bier_icon.svg">
           </th>
-          <th>
+          <!-- <th>
             <img src="./assets/media/score_icon.svg">
-          </th>  
+          </th>   -->
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Kranplatzverdichter</td>
-          <td>2</td>
-          <td>3</td>
-        </tr>
-        <tr>
-          <td>immerblau</td>
-          <td>4</td>
-          <td>2</td>
+        <tr *ngFor="let group of groups | async">
+          <td>{{group.name}}</td>
+          <td>{{groupOrders[group.name]}}</td>
+          <!-- <td>{{getScore(group)}}</td> -->
         </tr>
       </tbody>
     </table>

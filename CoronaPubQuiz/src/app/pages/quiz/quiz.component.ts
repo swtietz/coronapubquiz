@@ -14,6 +14,8 @@ import { flatMap } from 'rxjs/operators';
 
 import { AngularFireDatabase } from '@angular/fire/database';
 import 'firebase/database';
+import { GroupService, Group } from 'src/app/group.service';
+import { timingSafeEqual } from 'crypto';
 
 declare function setupStreams(database: any, quiz: any, group: any, user: any, isModerator: boolean, videoElement: any, audioParent: any): any;
 
@@ -37,6 +39,8 @@ export class QuizComponent implements OnInit, AfterViewInit {
   bar: string;
   quiz: string;
   group: string;
+  groups: Observable<Group[]>
+  groupOrders: object;
   destroyStreams: any;
 
 
@@ -47,18 +51,20 @@ export class QuizComponent implements OnInit, AfterViewInit {
     private authService:AuthenticationService,
     private route: ActivatedRoute,
     private quizService: QuizService,
+    private groupService: GroupService,
     public pubService: PubService,
     private router: Router,
     private db: AngularFireDatabase
-
-              ) {}
+              ) {
+                this.groupOrders = {}
+              }
 
   ngOnInit(): void {
     this.bar = this.route.snapshot.paramMap.get('name');
     this.quiz = this.route.snapshot.paramMap.get('quizname');
     this.group = this.route.snapshot.paramMap.get('groupname');
+    
     this.questions = this.quizService.getQuestions(this.bar, this.quiz);
-
     
     this.authService.user$.subscribe((user) => { 
       if(!user){
@@ -68,8 +74,6 @@ export class QuizComponent implements OnInit, AfterViewInit {
       }
     })
 
-
-
     this.questions.subscribe((questions:Question[])=>{
 
         this.activeQuestion = questions.filter((q) => q.active)[0]
@@ -77,20 +81,19 @@ export class QuizComponent implements OnInit, AfterViewInit {
         this.submissions.subscribe((submissions:Submission[])=>{
         this.activeSubmission = submissions.filter((s) => s.questionId == this.activeQuestion.id && s.groupId == this.group)[0]
         this.currentAnswer = this.activeSubmission.answer
-        
-
       })
-
     })
-
-
-
     
-
-    
-
-    
-
+    this.groups = this.groupService.getGroups(this.bar, this.quiz);
+    this.quizService.getOrders(this.bar, this.quiz).subscribe(orders=>{
+      this.groups.subscribe(groups => {
+        groups.forEach(group => {
+          console.log('orders', group, orders)
+          this.groupOrders[group.name] = ""+orders.filter(o => o.group === group.name).length
+          console.log('sum',this.groupOrders[group.name], orders.filter(o => o.group === group.name).length)
+        });
+      })
+    })
   }
   
   getCurrentSubmission(question:Question): Observable<Submission>{

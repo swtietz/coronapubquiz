@@ -20,6 +20,12 @@ export class Quiz{
   id: any
 }
 
+export class Order{
+  drink: string;
+  user: string;
+  group: string;
+}
+
 export class Question extends Object{
   id: string;
   question: string;
@@ -102,6 +108,11 @@ export class QuizService {
       drink: drink,
       group: group
     })
+  }
+
+  getOrders(bar, quiz): Observable<Order[]> {
+    const orderId = this.firestore.createId()
+    return this.firestore.collection<Order>('pubs/'+bar+'/quizzes/'+quiz+'/orders/').valueChanges()
   }
 
 
