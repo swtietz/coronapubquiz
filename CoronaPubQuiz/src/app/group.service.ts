@@ -9,7 +9,7 @@ import 'firebase/firestore';
 
 export class Group{
 	name:string;
-  id:string;
+  //id:string;
 
 }
 
@@ -46,6 +46,7 @@ export class GroupService {
   addGroup(bar:string, quiz:string, group:string){
   	 let quizzes = this.firestore.collection<Group>('pubs/'+bar+'/quizzes/'+quiz+'/groups').add({
 	    name: group,
+
     })
   }
 }

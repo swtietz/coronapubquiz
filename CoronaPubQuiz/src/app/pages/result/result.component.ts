@@ -78,17 +78,7 @@ export class ResultComponent implements OnInit {
   }
 
 
-  getSubmissionsForQuestion(questionId:string): Observable<any[]>{
-  	this.submissions$.pipe(
-  		map((subs:Submission[]) => {
-  			return subs.filter((sub:Submission) => sub.questionId == questionId)
-  		})).subscribe(console.log)
-
-    //return this.questions$
-
-  	//return this.submissions.filter(submission)
-  }
-
+  
 
 
 }
