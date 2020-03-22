@@ -25,22 +25,24 @@
 					</div>
 				</div>
 
-				<button type="button" class="btn btn-primary float-right mt-2 mb-2" (click)="clickAddNewItem()">
+				<button type="button" class="btn btn-primary  mt-2 mb-2" (click)="clickAddNewItem()">
 					Menü Item hinzufügen
 				</button>
-			</div>
 
-			<div class="col-md-11 offset-md-1 col-lg-5" *ngIf="showAddMenuItem">
-				<h6>Neues Getränk oder Gericht auf die Karte packen:</h6>
-				<div>
-					<label for="typeahead-basic">Name:</label>
-					<input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="newItem.name" />
-					<label for="typeahead-basic">Price:</label>
-					<input id="typeahead-basic" type="number" class="form-control" [(ngModel)]="newItem.price" />
+				<div *ngIf="showAddMenuItem">
+					<div class="alert alert-secondary fade show">
+						<strong>Neues Getränk oder Gericht auf die Karte packen:</strong>
+						<div>
+							<label for="typeahead-basic">Name:</label>
+							<input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="newItem.name" />
+							<label for="typeahead-basic">Price:</label>
+							<input id="typeahead-basic" type="number" class="form-control" [(ngModel)]="newItem.price" />
+						</div>
+						<button type="button" class="btn btn-success mt-2" (click)="clickSaveNewItem()">
+							Speichern
+						</button>
+					</div>
 				</div>
-				<button type="button" class="btn btn-success float-right mt-2" (click)="clickSaveNewItem()">
-					Speichern
-				</button>
 			</div>
 		</div>
 	</div>
