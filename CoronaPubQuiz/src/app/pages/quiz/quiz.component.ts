@@ -8,9 +8,6 @@ import { PubService } from 'src/app/pub.service';
 
 import { Observable } from 'rxjs';
 
-
-
-
 import { AngularFireDatabase } from '@angular/fire/database';
 import 'firebase/database';
 
@@ -57,12 +54,8 @@ export class QuizComponent implements OnInit, AfterViewInit {
         this.router.navigate(['/bar/'+this.bar+'/'+this.quiz+'/'+this.group]);
       }
     })
-
-
   }
   
-
-
   ngAfterViewInit(): void {
     var user = this.authService.getUser();
     if(user) {
