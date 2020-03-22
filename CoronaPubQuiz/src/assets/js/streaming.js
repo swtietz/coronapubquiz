@@ -1,7 +1,17 @@
+function uuidv4() {
+  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+}
+
 function setupStreams(firebase, quiz, group, user, isModerator, videoElement, audioParent) {
   if(isModerator) {
     user = "moderator";
+  } else {
+    user = uuidv4();
   }
+
+  console.log("user:", user);
 
   var database = firebase.database.app.firebase_.database().ref();
   var pubsubQuiz = database.child('quizzes/' + quiz);
@@ -106,11 +116,12 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
           }
         } else {
           console.error("unhandled pubsub message");
+          console.log("sender:", sender);
+          console.log("receiver: ", receiver);
+          console.log("msg: ", msg);
         }
     }
   };
-
-  pubsubQuiz.on('child_added', readMessage);
 
   if(isModerator) {
     // moderator
@@ -123,6 +134,7 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
       .then(stream => videoElement.srcObject = stream) // show self
       .then(stream => mediaStream = stream); // save stream object for peer connections
 
+    pubsubQuiz.on('child_added', readMessage);
     sendMessage("moderator", "all", JSON.stringify({new_moderator: true}));
   } else {
     // guest
@@ -131,9 +143,6 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
 
     navigator.mediaDevices.getUserMedia({audio: true})
       .then(stream => mediaStream = stream); // save stream object for peer connections
-
-    pcs["moderator"] = create_peer_connection("moderator", videoElement);
-    sendMessage(user, "moderator", JSON.stringify({request_video: true}));
 
     var msg = pubsubGroup.push({ "user": user });
     msg.remove();
@@ -159,6 +168,11 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
 
       sendMessage(user, receiver, JSON.stringify({request_audio: true}));
     });
+
+    pcs["moderator"] = create_peer_connection("moderator", videoElement);
+    
+    pubsubQuiz.on('child_added', readMessage);
+    sendMessage(user, "moderator", JSON.stringify({request_video: true}));
   }
 
 }
