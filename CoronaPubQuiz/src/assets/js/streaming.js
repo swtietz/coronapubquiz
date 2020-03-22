@@ -5,11 +5,10 @@ function uuidv4() {
 }
 
 function setupStreams(firebase, quiz, group, user, isModerator, videoElement, audioParent) {
-  if(isModerator) {
-    user = "moderator";
-  } else {
-    user = uuidv4();
+  if(!window.CPQStreamingUser) {
+    window.CPQStreamingUser = (isModerator) ? "moderator" : uuidv4();
   }
+  user = window.CPQStreamingUser;
 
   console.log("user:", user);
 
@@ -93,6 +92,8 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
           pcs[sender].createOffer()
             .then(offer => pcs[sender].setLocalDescription(offer) )
             .then(() => sendMessage(user, sender, JSON.stringify({'sdp': pcs[sender].localDescription})));
+          
+          console.log(sender + " connected");
         } else if (msg.request_audio) {
           mediaObjects[sender] = create_audio_element();
 
@@ -101,6 +102,8 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
           pcs[sender].createOffer()
             .then(offer => pcs[sender].setLocalDescription(offer) )
             .then(() => sendMessage(user, sender, JSON.stringify({'sdp': pcs[sender].localDescription})));
+          
+          console.log(sender + " connected");
         } else if (msg.new_moderator) {
           pcs["moderator"].close();
           pcs["moderator"] = create_peer_connection("moderator", videoElement);
@@ -151,28 +154,30 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
 
     pubsubGroup.on('child_added', function(data) {
       var receiver = data.val().user;
+      console.log(receiver, user);
+      if(!pcs[receiver] && receiver != user) {
+        mediaObjects[receiver] = create_audio_element();
 
-      mediaObjects[receiver] = create_audio_element();
+        pcs[receiver] = create_peer_connection(receiver, mediaObjects[receiver]);
+        pcs[receiver].addStream(mediaStream);
 
-      pcs[receiver] = create_peer_connection(receiver, mediaObjects[receiver]);
-      pcs[receiver].addStream(mediaStream);
+        setTimeout(function() {
+          if(pcs[receiver] && pcs[receiver].iceConnectionState == "new") {
+            delete pcs[receiver];
 
-      setTimeout(function() {
-        if(pcs[receiver] && pcs[receiver].iceConnectionState == "new") {
-          delete pcs[receiver];
+            if(mediaObjects[receiver]) {
+              mediaObjects[receiver].remove();
+              delete mediaObjects[receiver];
+            }
 
-          if(mediaObjects[receiver]) {
-            mediaObjects[receiver].remove();
-            delete mediaObjects[receiver];
+            console.log(receiver + " disconnected");
           }
+        }, 10000);
 
-          console.log(receiver + " disconnected");
-        }
-      }, 10000);
+        sendMessage(user, receiver, JSON.stringify({request_audio: true}));
 
-      sendMessage(user, receiver, JSON.stringify({request_audio: true}));
-
-      console.log(receiver + " connected");
+        console.log(receiver + " connected");
+      }
     });
 
     pcs["moderator"] = create_peer_connection("moderator", videoElement);
