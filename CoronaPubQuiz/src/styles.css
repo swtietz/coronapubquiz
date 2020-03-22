@@ -1,2 +1,97 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.css';
+
+html, 
+body,
+.content {
+    height: 100%;
+}
+
+body {
+    background-image: url('./assets/media/joshua-newton-fUd_0iyYFVg-unsplash.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    overflow: hidden;
+}
+
+button.pub_button {
+    position: absolute;
+    left: 30px;
+    bottom: 30px;
+
+    background: #004B55;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 26px;
+
+    max-width: 225px;
+    padding: 10px;
+
+    font-family: Reem Kufi;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 14px;
+    display: flex;
+    align-items: center;    
+    justify-content: center;
+    text-align: center;
+    text-transform: uppercase;
+
+    color: #FFFFFF;
+}
+
+.bierdeckel {
+    background-image: url('./assets/media/bierdeckel.png');
+    background-size: cover;
+
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    padding: 35px;
+}
+
+.bierdeckel.left {
+    position: absolute;
+    width: 289px;
+    height: 284px;
+    left: -55px;
+    top: -23.91px;
+
+    transform: rotate(-12deg);
+
+    justify-content: center;
+}
+
+.bierdeckel.right {
+    position: absolute;
+    width: 289px;
+    height: 284px;
+    right: -50px;
+    top: 231px;
+
+    transform: rotate(8deg);
+
+    align-content: flex-start;
+}
+
+h2 {
+    font-family: Reem Kufi;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 27px;
+    text-transform: uppercase;
+
+    /* underline */ 
+    background-image: url('./assets/media/underline.svg');
+    background-repeat: no-repeat;
+    background-position: 0 1.04em;
+    background-size: contain;
+}
+
+p {
+    font-family: Reem Kufi;
+}
