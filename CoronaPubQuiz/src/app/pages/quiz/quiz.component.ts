@@ -2,7 +2,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { ElementRef, ViewChild, Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 
-import { AuthenticationService } from '../../authentication.service'
+import { AuthenticationService, User } from '../../authentication.service'
 import { QuizService, Question, Submission } from '../../quiz.service'
 import { PubService } from 'src/app/pub.service';
 
@@ -33,6 +33,7 @@ export class QuizComponent implements OnInit, AfterViewInit {
   activeQuestion: Question;
   activeSubmission: Submission;
   questions: Observable<Question[]>;
+  groupMembers: Observable<User[]>;
   submissions: Observable<Submission[]>
   bar: string;
   quiz: string;
@@ -58,8 +59,13 @@ export class QuizComponent implements OnInit, AfterViewInit {
     this.quiz = this.route.snapshot.paramMap.get('quizname');
     this.group = this.route.snapshot.paramMap.get('groupname');
     this.questions = this.quizService.getQuestions(this.bar, this.quiz);
+
     this.submissions = this.quizService.getSubmissions(this.bar, this.quiz)
     
+
+    this.groupMembers = this.authService.usersByGroup(this.group);
+    console.log(this.groupMembers);
+
     this.authService.user$.subscribe((user) => { 
       if(!user){
         this.router.navigate(['/bar/'+this.bar+'/'+this.quiz+'/'+this.group+'/welcome']);
@@ -107,7 +113,7 @@ export class QuizComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     var user = this.authService.getUser();
     if(user) {
-      this.destroyStreams = setupStreams(this.db, this.quiz, this.quiz + "_" + this.group, user.uid, this.pubService.isOwner, this.videoElement.nativeElement, this.audioParent.nativeElement);
+      //this.destroyStreams = setupStreams(this.db, this.quiz, this.quiz + "_" + this.group, user.uid, this.pubService.isOwner, this.videoElement.nativeElement, this.audioParent.nativeElement);
     }
   }
 

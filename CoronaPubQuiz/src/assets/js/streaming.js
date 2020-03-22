@@ -105,7 +105,9 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
             console.log(sender + " connected");
           }
         } else if (msg.new_moderator) {
-          pcs["moderator"].close();
+          if(pcs["moderator"]) {
+            pcs["moderator"].close();
+          }
           pcs["moderator"] = create_peer_connection("moderator", videoElement);
           sendMessage(user, "moderator", JSON.stringify({request_video: true}));
         } else if (msg.ice != undefined) {

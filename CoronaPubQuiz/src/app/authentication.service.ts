@@ -52,7 +52,7 @@ export class AuthenticationService {
 
 	async register(email: string, password: string) {
 	    var result = await this.afAuth.createUserWithEmailAndPassword(email, password)
-	    this.createUser(email, email, '','');
+	    this.createUser(email, email, '','', '');
 	}
 
 
@@ -65,15 +65,19 @@ export class AuthenticationService {
 
 	}
 	
-	createUser(id:string, email: string, name: string, icon:string):void {
+	createUser(id:string, email: string, name: string, icon:string, group:string):void {
 		this.firestore.collection<User>('/users').doc(id).set({
 			email: email,
-			name:name,
-			icon:icon
+			name: name,
+			icon: icon,
+			group: group
 		})
 	}
-	
 
+	usersByGroup(group:string): Observable<User[]> {
+		return this.firestore.collection<User>('/users', ref => ref.where('group', '==', group)).valueChanges();
+	}
+	
 	async logout(){
 	    await this.afAuth.signOut();
 	    localStorage.removeItem('user');
