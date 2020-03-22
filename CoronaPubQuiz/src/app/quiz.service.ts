@@ -147,6 +147,7 @@ export class QuizService {
   addSubmission(bar, quiz, questionId, groupId, answer): void {
     console.log('Adding submission', groupId+questionId)
   	this.firestore.collection<Submission>('pubs/'+bar+'/quizzes/'+quiz+'/submissions/').doc(groupId+'_'+questionId).set(Object.assign({}, {answer: answer,
+        barId: bar,
         quizId: quiz,
         groupId: groupId,
         questionId:questionId
