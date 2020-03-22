@@ -38,15 +38,17 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
       if (pc.iceConnectionState === "failed" ||
           pc.iceConnectionState === "disconnected" ||
           pc.iceConnectionState === "closed") {
-        console.log(receiver + " disconnected");
+        if(pcs[receiver]) {
+          delete pcs[receiver];
 
-        delete pcs[receiver];
+          if(receiver == "moderator") {
+            videoElement.srcObject = undefined;
+          } else if(mediaObjects[receiver]) {
+            mediaObjects[receiver].remove();
+            delete mediaObjects[receiver];
+          }
 
-        if(receiver == "moderator") {
-          videoElement.srcObject = undefined;
-        } else if(mediaObjects[receiver]) {
-          mediaObjects[receiver].remove();
-          delete mediaObjects[receiver];
+          console.log(receiver + " disconnected");
         }
       }
     };
@@ -163,10 +165,14 @@ function setupStreams(firebase, quiz, group, user, isModerator, videoElement, au
             mediaObjects[receiver].remove();
             delete mediaObjects[receiver];
           }
+
+          console.log(receiver + " disconnected");
         }
       }, 10000);
 
       sendMessage(user, receiver, JSON.stringify({request_audio: true}));
+
+      console.log(receiver + " connected");
     });
 
     pcs["moderator"] = create_peer_connection("moderator", videoElement);
