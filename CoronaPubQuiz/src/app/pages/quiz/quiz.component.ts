@@ -108,7 +108,9 @@ export class QuizComponent implements OnInit, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-    this.destroyStreams();
+    if(this.destroyStreams) {
+      this.destroyStreams();
+    }
   }
 
   submit(question, answer) {
