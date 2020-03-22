@@ -33,18 +33,15 @@ export class PubService {
   constructor(firestore: AngularFirestore) { 
   	this.firestore = firestore;
     
-
   	let pub = new Pub();
   	pub.id = 'FreyaFuchs'
   	pub.name = 'Freya Fuchs'
-  	this.addPub(pub)
 
   	let item = new MenuItem();
   	item.id = 'Bier'
   	item.price = 1.0
   	item.name = 'Bier'
   	this.addMenuItem(pub.id, item)
-
   }
 
 

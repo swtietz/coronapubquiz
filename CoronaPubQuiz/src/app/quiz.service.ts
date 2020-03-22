@@ -34,37 +34,7 @@ export class QuizService {
   bar: string;
   quiz: string;
 
-  firestore: AngularFirestore;
-
-  constructor(firestore: AngularFirestore) { 
-
-  	this.firestore = firestore;
-
-    //this.bar = 'anze'
-    //this.quiz = 'history_quiz'
-
-
-    //this.setQuestionActive('anze','history_quiz','q1')
-
-    this.addQuiz('anze', 'test2')
-    
-    let question = new Question();
-    question.id = 'q1';
-    question.question = 'Wie spät ist es?';
-    question.index = 1;
-    question.A = 'AAA';
-    question.B = 'BBB';
-    question.C = 'CCC';
-    question.D = 'DDD';
-    question.answer = 'C';
-    question.active = true;
-    
-    this.addQuestion('anze', 'test2', question)
-
-    this.addSubmission('anze', 'test2', question.id, 'Füchse','A');
-
-	console.log('Executed')
-  }
+  constructor(private firestore: AngularFirestore) {}
 
   private loadQuestions(bar, quiz): Observable<Question[]> {
     let questions$ = this.firestore.collection('pubs').doc(bar).collection('quizzes').doc(quiz).collection('questions')
@@ -100,6 +70,12 @@ export class QuizService {
     return this.quizzes$
   }
 
+  getQuiz(barId, quizId): Observable<Quiz> {
+    console.log(barId, quizId)
+    return this.firestore.collection('pubs').doc(barId).collection('quizzes').doc<Quiz>(quizId)
+    		.valueChanges()
+  }
+
   getQuestions(bar, quiz): Observable<Question[]> {
     this.questions$ = this.loadQuestionsWithID(bar, quiz)
     //this.questions$.subscribe(console.log);
@@ -119,7 +95,6 @@ export class QuizService {
 		}));
 	return questions$
   }
-  	
 
   setQuestionActive(bar, quiz, id, status=true): void {
 
@@ -130,15 +105,16 @@ export class QuizService {
 	
   }
 
-
-  addQuiz(bar, quiz): void {
-  	let quizzes = this.firestore.collection<Quiz>('pubs/'+bar+'/quizzes/').doc(quiz).set({
-	    name: quiz,
-	})
+  addQuiz(barId, quizName): string {
+    const quizId = this.firestore.createId()
+  	let quizzes = this.firestore.collection<Quiz>('pubs/'+barId+'/quizzes/').doc(quizId).set({
+	    name: quizName,
+    })
+    return quizId
   }
 
   addQuestion(bar, quiz, question:Question): void {
-  	this.firestore.collection<Question>('pubs/'+bar+'/quizzes/'+quiz+'/questions').doc(question.id).set(Object.assign({}, question))
+  	this.firestore.collection<Question>('pubs/'+bar+'/quizzes/'+quiz+'/questions').doc(this.firestore.createId()).set(Object.assign({}, question))
   }
 
   addSubmission(bar, quiz, questionId, groupId, answer): void {
