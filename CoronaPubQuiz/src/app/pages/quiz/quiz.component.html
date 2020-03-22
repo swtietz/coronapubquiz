@@ -78,6 +78,7 @@
         <div class="d-flex flex-wrap justify-content-end">
           <div (click)="order('🥃')" class="rounded-circle m-2 drink">🥃</div>
         </div>
+        
         <div class="card">
           <div class="card-body">
             <p class="card-text">{{question.question}}</p>
@@ -88,7 +89,7 @@
           <button type="button" [ngClass]="currentAnswer === 'A' ? 'active' : ''" class="btn btn-primary btn-block answer" (click)="submit(question, 'A')">{{question.A}}</button>
           <button type="button" [ngClass]="currentAnswer === 'B' ? 'active' : ''" class="btn btn-primary btn-block answer" (click)="submit(question, 'B')">{{question.B}}</button>
           <button type="button" [ngClass]="currentAnswer === 'C' ? 'active' : ''" class="btn btn-primary btn-block answer" (click)="submit(question, 'C')">{{question.C}}</button>
-          <button type="button" [ngClass]="currentAnswer === 'C' ? 'active' : ''" class="btn btn-primary btn-block answer" (click)="submit(question, 'D')">{{question.D}}</button>  
+          <button type="button" [ngClass]="currentAnswer === 'D' ? 'active' : ''" class="btn btn-primary btn-block answer" (click)="submit(question, 'D')">{{question.D}}</button>  
 
 
       </div>

@@ -77,3 +77,50 @@ video.moderator {
 
     margin: 0.5rem;
 }
+
+
+.drink:active::after {
+    background-color: rgb(231, 79, 135);
+    transform: scaleX(1.4) scaleY(1.6);
+    opacity: 0;
+}
+
+.drink:not(:active)::after  {
+    transition: all 1s step-end;
+}
+
+.drink:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.drink::after {
+    content: "";
+    display: inline-block;
+    background-color: none;
+
+    height: 100%;
+    width: 100%;
+    border-radius: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: all .4s;
+}
+
+
+
+
+
+@keyframes moveInBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
