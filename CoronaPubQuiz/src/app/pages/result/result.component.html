@@ -12,10 +12,12 @@
 
 			<div *ngFor="let submission of submissions$ | async">
 
-				<div *ngIf="submission.questionId == question.id && submission.quizId == quiz">
-					{{submission.barId}}, {{submission.quizId}}, {{submission.questionId}}
-					<div [style.background-color]="submission.groupId == group.name ? 'purple': 'turquoise'"> {{group.name}} </div>
-					<div [style.background-color]="submission.answer == group.answer ? 'green': 'red'"> {{submission.answer}} </div>
+				<div class="row" *ngIf="submission.questionId == question.id && submission.quizId == quiz && submission.groupId == group.name">
+
+					<!-- group -->
+					<div class="col-md-6 col-lg-6" [style.background-color]="submission.groupId == group.name ? 'purple': 'turquoise'"> {{group.name}} </div>
+
+					<div class="col-md-6 col-lg-6" [style.background-color]="submission.answer == question.answer ? 'green': 'red'"> {{submission.answer}} </div>
 
 
 					

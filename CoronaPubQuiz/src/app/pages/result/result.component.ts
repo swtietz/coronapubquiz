@@ -34,7 +34,6 @@ export class ResultComponent implements OnInit {
 
 
 
-  submissions: Submission[] = null;
 
   constructor(    
 
@@ -61,10 +60,10 @@ export class ResultComponent implements OnInit {
 
     this.submissions$ = this.quizService.getSubmissions(this.bar, this.quiz);
 
-    this.submissions$.subscribe((submissions) => {
-    	this.submissions = submissions
+    
+    this.submissions$.subscribe((qs) => {
+      console.log('subs:',qs)
     })
-
 
 
     
