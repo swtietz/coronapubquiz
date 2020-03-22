@@ -22,6 +22,18 @@ video.moderator {
     font-size: 1.4em;
 }
 
+.bierdeckel.left {
+    position: absolute;
+    width: 289px;
+    height: 284px;
+    left: -55px;
+    top: -83.91px;
+
+    transform: rotate(-12deg);
+
+    justify-content: center;
+}
+
 .drink {
     background-color: #E70053; 
     height: 60px; 
